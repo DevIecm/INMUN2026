@@ -1,0 +1,26 @@
+<!-- <div class="col-12"> -->
+<div class="card">
+    <h5>{{ (id_comite) ? 'Editar comité' : 'Registrar comité' }}</h5>
+    <form [formGroup]="formComite" #pnl (submit)="submit()">
+        <div class="p-fluid p-formgrid grid">
+            <div class="field col-12">
+                <label htmlFor="firstname2">Nombre del comité</label>
+                <input pInputText id="firstname2" type="text" formControlName="nombre_comite" />
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="lastname2">Cupo</label>
+                <p-inputNumber mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0"
+                    [max]="100" formControlName="cupo"></p-inputNumber>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="city">Fechas</label>
+                <!-- <input pInputText id="city" type="text" /> -->
+                <p-calendar selectionMode="multiple" [readonlyInput]="true" inputId="multiple" formControlName="fecha"></p-calendar>
+            </div>
+        </div>
+        <button [disabled]="!formComite.valid" pButton pRipple type="submit" label="Guardar y continuar"
+            class="w-full p-3 text-xl iecm-button-primary" icon="pi pi-save" iconPos="right"></button>
+    </form>
+</div>
+
+<!-- </div> -->

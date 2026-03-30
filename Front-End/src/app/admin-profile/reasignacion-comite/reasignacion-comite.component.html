@@ -1,0 +1,57 @@
+<p-toast></p-toast>
+
+<div class="card">
+
+    <!-- [tableStyle]="{'min-width': '70rem'}" -->
+    <p-table #dt [value]="reasignaciones" [rows]="10" [paginator]="true"
+        [globalFilterFields]="['id_usuario','nombre_completo','nombre_comite']" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+        [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Reasignación de comité</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText #textInput type="text" (input)="dt.filterGlobal(textInput.value, 'contains')"
+                        placeholder="Buscar..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <!-- <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th> -->
+                <th pSortableColumn="id_usuario">ID usuario<p-sortIcon field="id_usuario"></p-sortIcon></th>
+                <th pSortableColumn="nombre_completo">Nombre<p-sortIcon field="nombre_completo"></p-sortIcon></th>
+                <th pSortableColumn="nombre_comite">Comité <p-sortIcon field="nombre_comite"></p-sortIcon></th>
+                <th style="min-width:10rem">Modificar comité</th>
+                <th>Eliminar cuenta</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reasignacion>
+            <tr>
+                <td>
+                    {{reasignacion.id_usuario}}
+                </td>
+                <td>{{reasignacion.nombre_completo}}</td>
+                <td id="nombre_comite_{{reasignacion.id_usuario}}">{{reasignacion.nombre_comite}}</td>
+                <td class="p-fluid">
+                    <!-- <p-dropdown [options]="selComites" optionLabel="nombre_comite" optionValue="id_comite" [(ngModel)]="reasignacion.id_comite" placeholder="Selecciona el comité"></p-dropdown> -->
+                    <select class="p-dropdown p-component" id="selComites" #opt2 (change)="cambiarComite(reasignacion.id_usuario, opt2.value);">
+                        <option [ngClass]="{'sin-cupo': comite.lugares_disponibles === 0}" #opt *ngFor="let comite of selComites" [disabled]="comite?.lugares_disponibles === 0" [ngValue]="reasignacion.id_comite" [selected]="comite.id_comite === reasignacion.id_comite" [value]="comite.id_comite">{{comite.nombre_comite}}</option>
+                    </select>
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                        (click)="deleteProduct(reasignacion)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                En total hay {{reasignaciones.length}} {{reasignaciones.length <= 1 ? 'registro' : 'registros' }}.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

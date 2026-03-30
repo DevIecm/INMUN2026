@@ -1,0 +1,127 @@
+<!-- <p-blockUI [blocked]="blocked" [target]="pnl">
+</p-blockUI> -->
+<form [formGroup]="formDatos" #pnl (submit)="submit()">
+
+    <div class="p-fluid">
+        <div class="field">
+            <label for="nombres">Nombre(s)</label>
+            <input pInputText id="nombres" type="text" formControlName="nombres" [readonly]="true">
+        </div>
+        <div class="field">
+            <label for="primer_apellido">Primer apellido</label>
+            <input pInputText id="primer_apellido" type="text" formControlName="primer_apellido" [readonly]="true">
+        </div>
+        <div class="field">
+            <label for="segundo_apellido">Segundo apellido</label>
+            <input pInputText id="segundo_apellido" type="text" formControlName="segundo_apellido" [readonly]="true">
+        </div>
+        <div class="field">
+            <label for="genero">Sexo</label>
+            <p-dropdown id="genero" [options]="selGenero" [disabled]="true" formControlName="genero"
+                placeholder="Selecciona" optionValue="genero" optionLabel="descripcion_genero"
+                [showClear]="false"></p-dropdown>
+        </div>
+        <div class="field">
+            <label for="edad">Edad</label>
+            <input pInputText id="edad" type="text" [disabled]="true" [readOnly]="true" formControlName="edad">
+        </div>
+
+        <div class="field">
+            <label for="curp">CURP</label>
+            <p-inputMask mask="aaaa*99999aaaaa**9" id="curp" [disabled]="true" formControlName="curp" [readonly]="true"
+                class="w-full"></p-inputMask>
+        </div>
+
+
+        <div pAnimate enterClass="flip" leaveClass="fadeoutleft"
+            class="flex justify-content-center align-items-center animation-duration-2000 animation-ease-out">
+            <p-tag severity="{{!complemento_info ? 'warning' : 'success'}}"
+                value="{{!complemento_info ? 'Complementa tu información' : 'Informacion ya capturada'}}"></p-tag>
+        </div>
+
+
+        <div class="field">
+            <label for="telefono_celular">Teléfono celular</label>
+            <input pInputText id="telefono_celular" type="text" formControlName="telefono_celular"
+                [disabled]="complemento_info" [readOnly]="complemento_info" maxlength="10">
+            <!-- {{complemento_info}} -->
+        </div>
+
+        <div class="field">
+            <label for="telefono_casa">Teléfono de casa</label>
+            <input pInputText id="telefono_casa" type="text" formControlName="telefono_casa"
+                [disabled]="complemento_info" [readOnly]="complemento_info" maxlength="10">
+        </div>
+
+        <div class="field">
+            <label for="demarcacion_territorial">Demarcación territorial donde vives. Si no vives en la Ciudad de
+                México, entidad federativa (estado) de donde eres.</label>
+            <p-dropdown #demarcacion id="demarcacion_territorial" [options]="selAlcaldias"
+                formControlName="demarcacion_territorial" placeholder="Selecciona" optionValue="id_alcaldia"
+                optionLabel="nombre_alcaldia" [showClear]="true" (onChange)="seleccionaEntidad($event.value);"
+                [disabled]="complemento_info"></p-dropdown>
+        </div>
+
+        <div class="field">
+            <label for="entidad_federativa">Indica la entidad federativa.</label>
+            <p-dropdown id="entidad_federativa" [options]="selEstados" formControlName="entidad_federativa"
+                placeholder="Selecciona" [disabled]="demarcacion.value != 1" optionValue="id_estado"
+                optionLabel="nombre" [showClear]="true" [disabled]="complemento_info || true"></p-dropdown>
+        </div>
+
+        <div class="field">
+            <label for="como_te_enteraste">¿Cómo te enteraste del INMUN?</label>
+            <p-dropdown [options]="entera" formControlName="como_te_enteraste" placeholder="Selecciona"
+                optionValue="value" optionLabel="label" [showClear]="true" [disabled]="complemento_info"></p-dropdown>
+        </div>
+
+        <div class="field">
+            <label for="como_te_enteraste">Necesito un justificante de asistencia al evento.</label>
+            <!-- <p-selectButton [options]="stateOptions" (onChange)="con_discapacidad( $event.value )"
+                formControlName="discapacidad" optionLabel="label" optionValue="value"
+                [disabled]="complemento_info"></p-selectButton> -->
+            <p-checkbox #necesito_justificante (onChange)="inputsJustificante( $event.checked );"
+                formControlName="necesito_justificante" [binary]="true" [value]="false" inputId="binary"></p-checkbox>
+        </div>
+
+        <ng-container *ngIf="necesito_justificante.checked();">
+
+
+            <div class="field">
+                <label for="persona_dirigido">Nombre completo de la persona a quien va dirigido el
+                    justificante:</label>
+                <input pInputText id="persona_dirigido" type="text" formControlName="persona_dirigido" #persona_dirigido
+                    [disabled]="complemento_info" [readOnly]="complemento_info"
+                    (input)="formDatos.get('persona_dirigido')?.reset(persona_dirigido.value.toUpperCase())"
+                    [maxlength]="100">
+            </div>
+            <div class="field">
+                <label for="cargo_persona">Cargo de la persona a quien va dirigido el justificante:</label>
+                <input pInputText id="cargo_persona" type="text" formControlName="cargo_persona" #cargo_persona
+                    [disabled]="complemento_info" [readOnly]="complemento_info"
+                    (input)="formDatos.get('cargo_persona')?.reset(cargo_persona.value.toUpperCase())"
+                    [maxlength]="100">
+            </div>
+            <div class="field">
+                <label for="institucion_persona">Institución de la persona a quien va dirigido el justificante:</label>
+                <input pInputText id="institucion_persona" type="text" formControlName="institucion_persona"
+                    #institucion_persona [disabled]="complemento_info" [readOnly]="complemento_info"
+                    (input)="formDatos.get('institucion_persona')?.reset(institucion_persona.value.toUpperCase())"
+                    [maxlength]="100">
+            </div>
+        </ng-container>
+
+    </div>
+
+    <p-tag styleClass="m-2" *ngIf="!complemento_info" class="flex justify-content-end flex-wrap"
+        icon="pi pi-exclamation-triangle" severity="warning" value="Todos los campos son obligatorios"></p-tag>
+    <button [disabled]="!formDatos.valid || id_comite || complemento_info" pButton pRipple type="submit"
+        label="Guardar y continuar" class="w-full p-3 text-xl iecm-button-primary" icon="pi pi-save"
+        iconPos="right"></button>
+
+    <!--
+    {{ formDatos.valid }}
+    <br>
+    <pre>{{ formDatos.value | json }}</pre>
+    -->
+</form>

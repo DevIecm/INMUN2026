@@ -1,0 +1,108 @@
+<div class="grid mr-1 ml-1">
+    <div class="flex flex-wrap align-items-center justify-content-center sm:col-12 md:col-6 lg:col-6 bg-iecm">
+        <!-- Fondo Purple con logo IECM -->
+        <!-- <p>Lorem ipsum dolor sit.</p> -->
+        <img src="assets/layout/images/iecm/logo-whitetxt.png" class="img-iecm-login">
+
+    </div>
+
+    <div class="sm:col-12 md:col-6 lg:col-6">
+        <!-- Login -->
+
+        <div
+            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(140, 101, 170, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                <a class="grid layout-topbar-logo ml-4 justify-content-center">
+                    <img src="assets/images/inmun.jpg" alt="logo del INMUN" style="height: 8.5rem !important;">
+                </a>
+                <div class="text-center mb-5">
+                    <div class="text-900 text-3xl font-medium mb-3">Sistema de registro INMUN 2026</div>
+                </div>
+
+                <!-- {{ formLogin.value | json }}
+                {{ formLogin.valid }} -->
+
+                <form *ngIf="estado_sistema === 1;" [formGroup]="formLogin" (submit)="login();">
+                    <div>
+                        <label for="user1" class="block text-900 text-xl font-medium mb-2">Usuario</label>
+                        <!-- <input id="user1" type="text" formControlName="correo_electronico" pInputText class="w-full"> -->
+                        <input type="text" pInputText [pKeyFilter]="blockSpace" formControlName="usuario"
+                            style="padding:1rem" class="w-full">
+                        <!-- <label for="user1" class="block text-900 text-xl font-medium mb-2">Correo Electrónico</label>
+                        <input id="user1" type="text" formControlName="correo_electronico" pInputText class="w-full" style="padding:1rem"> -->
+
+                        <label for="password1" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
+                        <p-password formControlName="contrasena" [toggleMask]="false" styleClass="w-full mb-5"
+                            inputStyleClass="w-full p-3 md:w-30m" [feedback]="false"></p-password>
+                        <!-- <div class="mb-5">
+                            <label class="block text-900 text-xl font-medium">Captcha<input type="checkbox"></label>
+                        </div> -->
+                        <button [disabled]="!formLogin.valid" pButton pRipple type="submit" label="Acceder"
+                            class="w-full p-3 text-xl iecm-button-primary"></button>
+
+                        <div class="flex flex-wrap align-items-center justify-content-center mt-3 mb-3"
+                            *ngIf="estado_sistema === 1">
+                            <a class="font-medium no-underline ml-2 text-right cursor-pointer"
+                                [routerLink]="['/auth/olvide-contrasena']"
+                                style="color: var(--primary-color)">¿Olvidaste tu contraseña? Recupérala</a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Comienza validación de estado -->
+        <!-- cargando -->
+        <p-messages
+            *ngIf="!estado_sistema && estado_sistema !== 4 && estado_sistema !== 1 && estado_sistema !== 2 && estado_sistema !== 0"
+            severity="info">
+            <ng-template pTemplate>
+                <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                <div class="ml-2">
+                    Estamos cargando el estado del sistema, espera un momento...
+                </div>
+            </ng-template>
+        </p-messages>
+        <!-- 0 -->
+        <p-messages severity="warn" *ngIf="estado_sistema === 0;">
+            <ng-template pTemplate>
+                <i class="pi pi-times" style="font-size: 2rem"></i>
+                <div class="ml-2">
+                    El sistema se encuentra cerrado
+                </div>
+            </ng-template>
+        </p-messages>
+        <!-- 1 -->
+        <button *ngIf="estado_sistema === 1;" pButton pRipple label="Nuevo usuario"
+            class="w-full mt-3 p-3 text-xl p-button-secondary" [routerLink]="['/auth/register']"></button>
+        <!-- 2 -->
+        <p-messages *ngIf="estado_sistema === 2;" severity="warn">
+            <ng-template pTemplate>
+                <i class="pi pi-ban" style="font-size: 2rem;"></i>
+                <div class="ml-2">
+                    Lo sentimos, las inscripciones se han cerrado antes de tiempo, espera más noticias sobre nosotros.
+                </div>
+            </ng-template>
+        </p-messages>
+        <!-- 3 -->
+        <!-- 4 -->
+        <p-messages *ngIf="estado_sistema === 4;" severity="error">
+            <ng-template pTemplate>
+                <div class="ml-2">
+                    Espere un momento o hable con el administrador.
+                </div>
+            </ng-template>
+        </p-messages>
+        <!-- Termina validación de estado -->
+
+    </div>
+
+</div>
+
+
+<div class="layout-footer text-center pb-2">
+    <span class="font-medium ml-2">Instituto Electoral de la Ciudad de México &bull; Huizaches 25 &bull; Rancho Los
+        Colorines &bull; Tlalpan &bull; C.P. 14386 &bull; Ciudad de México &bull; Conmutador: (55) 5483 3800
+        {{version}}</span>
+</div>

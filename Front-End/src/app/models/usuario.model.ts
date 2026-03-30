@@ -1,0 +1,31 @@
+export class Usuario {
+    constructor(
+        public id_usuario: number,
+        public nombres: string,
+        public primer_apellido: string,
+        public segundo_apellido: string,
+        public edad: string,
+        public correo_electronico: string,
+        public curp: string,
+        public uuid: string,
+        public estado: number,
+        public perfil: number,
+        public genero: null,
+        public telefono_celular: string,
+        public telefono_casa: string,
+        public demarcacion_territorial: number,
+        public entidad_federativa: number,
+        public id_comite: number,
+        public folio: null,
+        public como_te_enteraste: null,
+        public discapacidad: boolean | null,
+        public cual_discapacidad: string | null,
+        public necesito_justificante: boolean,
+        public persona_dirigido?: string,
+        public cargo_persona?: string,
+        public institucion_persona?: string,
+        private contrasena?: string,
+        private validado?: boolean,
+        public loading?: boolean
+    ) { }
+}

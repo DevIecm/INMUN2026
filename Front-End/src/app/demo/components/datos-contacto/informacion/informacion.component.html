@@ -1,0 +1,57 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="grid">
+
+        <div class="col-12">
+
+            <h5>Número telefónico - Casa:</h5>
+            <p-inputMask mask="99-9999-9999" formControlName="telefono_casa" placeholder="55-5483-3800" slotChar=""></p-inputMask>
+
+        </div>
+
+        <div class="col-12">
+
+            <h5>Número telefónico - Oficina:</h5>
+            <p-inputMask mask="99-9999-9999" formControlName="telefono_oficina" placeholder="55-5483-3800" slotChar=""></p-inputMask>
+
+        </div>
+
+        <div class="col-12">
+
+            <h5>Número de extensión:</h5>
+            <p-inputNumber inputId="integeronly" formControlName="extension" [min]="1" [max]="99999" [useGrouping]="false" class="w-full" placeholder="Extensión"></p-inputNumber>
+
+        </div>
+
+        <div class="col-12">
+
+            <h5>Número telefónico - Celular: *</h5>
+            <p-inputMask mask="99-9999-9999" formControlName="telefono_celular" placeholder="55-5483-3800" slotChar=""></p-inputMask>
+
+        </div>
+
+        <div class="col-12">
+
+            <h5>Correo Electrónico: *</h5>
+            <input id="correo_electronico" type="text" [pKeyFilter]="regexEmail_KF" formControlName="correo_electronico" placeholder="Correo Electrónico" pInputText class="w-full" style="padding:1rem">
+
+        </div>
+
+
+        <div class="col-12">
+
+            <div class="grid">
+                <div class="col-6">
+                    <button pButton pRipple type="button" label="Anterior" class="w-full p-3 text-xl p-button-danger"></button>
+                </div>
+
+                <div class="col-6">
+                    <button pButton pRipple type="submit" label="Siguiente" class="w-full p-3 text-xl p-button-success" [disabled]="form.invalid"></button>
+                </div>
+            </div>
+
+        </div>
+
+        
+    </div>
+
+</form>

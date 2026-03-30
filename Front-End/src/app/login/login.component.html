@@ -1,0 +1,45 @@
+<div class="grid mr-1 ml-1">
+    <div class="flex flex-wrap align-items-center justify-content-center sm:col-12 md:col-6 lg:col-6 bg-iecm">
+        <img src="assets/layout/images/iecm/logo-whitetxt.png" class="img-iecm-login">
+
+    </div>
+
+    <div class="sm:col-12 md:col-6 lg:col-6">
+
+        <div
+            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(140, 101, 170, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                <a class="grid layout-topbar-logo ml-4 justify-content-center">
+                    <img src="assets/images/inmun.jpg" alt="logo del INMUN" style="height: 8.5rem !important;">
+                </a>
+                <div class="text-center mb-5">
+                    <div class="text-900 text-3xl font-medium mb-3">Administración del Sistema de registro INMUN 2026
+                    </div>
+                </div>
+                <form [formGroup]="loginForm" (submit)="login()">
+                    <div>
+                        <label for="usuario" class="block text-900 text-xl font-medium mb-2">Usuario</label>
+                        <input id="usuario" type="text" formControlName="usuario" pInputText class="w-full"
+                            style="padding:1rem">
+
+                        <label for="contrasena" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
+                        <p-password [feedback]="false" formControlName="contrasena" id="contrasena"
+                            styleClass="w-full mb-5" inputStyleClass="w-full p-3 md:w-30m"></p-password>
+
+                        <button [disabled]="!loginForm.valid" [loading]="loading" pButton pRipple type="submit"
+                            label="Acceder" class="w-full p-3 text-xl iecm-button-primary"></button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="layout-footer text-center pb-2">
+    <span class="font-medium ml-2">Instituto Electoral de la Ciudad de México &bull; Huizaches 25 &bull; Rancho Los
+        Colorines &bull; Tlalpan &bull; C.P. 14386 &bull; Ciudad de México &bull; Conmutador: (55) 5483 3800
+        {{version}}</span>
+</div>

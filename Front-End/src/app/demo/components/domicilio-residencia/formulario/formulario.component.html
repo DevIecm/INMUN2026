@@ -1,0 +1,235 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12">
+            <div class="flex justify-content-start">
+                <span class="flex align-items-center justify-content-center mr-2">Domicilio Fuera de la Ciudad de México:</span>
+                <p-checkbox (onChange)="aceptoTerminos()" class="flex align-items-center justify-content-center" [formControl]="$any(form.controls['terminos'])" [binary]="true"></p-checkbox>
+            </div>
+            
+        </div>
+
+
+        <div *ngIf="afuerasCdmx" class="col-12">
+            <div class="grid">
+
+                <div class="col-12">
+                    <h5>Domicilio: *</h5>
+                </div>
+
+                <div class="col-12">
+                    <h5>Calle: *</h5>
+                    <input id="calle" type="text" [pKeyFilter]="regexNumDir_KF" formControlName="calle_afuera" placeholder="Calle" pInputText class="w-full" style="padding:1rem">
+                </div>
+
+                <div class="col-12">
+                    <div class="grid">
+                        <div class="col-12 md:col-4 lg:col-4">
+                            <h5>Número Exterior: *</h5>
+                            <input id="numero_exterior_afuera" type="text" [pKeyFilter]="regexNumDir_KF" formControlName="numero_exterior_afuera" placeholder="Numero Exterior" pInputText class="w-full" style="padding:1rem">
+                        </div>
+                        <div class="col-12 md:col-4 lg:col-4">
+                            <h5>Número Interior:</h5>
+                            <input id="numero_interior_afuera" type="text" [pKeyFilter]="regexNumDir_KF" formControlName="numero_interior_afuera" placeholder="Numero Interior" pInputText class="w-full" style="padding:1rem">
+                        </div>
+                        <div class="col-12 md:col-4 lg:col-4">
+                            <h5>Código Postal: *</h5>
+                            <p-inputMask mask="99999" formControlName="codigo_postal_afuera" placeholder="14386" slotChar=""></p-inputMask>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="grid">
+                        <div class="col-12 md:col-6 lg:col-6">
+                            <h5>Colonia: *</h5>
+                            <p-dropdown placeholder="Colonia" formControlName="colonia_afuera" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="colonias" [showClear]="true"></p-dropdown>
+                        </div>
+                        <div class="col-12 md:col-6 lg:col-6">
+                            <h5>Ciudad: *</h5>
+                            <p-dropdown placeholder="Ciudad" formControlName="ciudad_afuera" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="ciudades" [showClear]="true"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <h5>Entidad Federativa: *</h5>
+                    <p-dropdown placeholder="Entidad Federativa" formControlName="entidad_fed_afuera" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="ciudades" [showClear]="true"></p-dropdown>
+                </div>
+
+
+                <div class="col-12 mt-3 -mb-4">
+                    <h5>Domicilio para recibir notificaciones en la Ciudad de México:</h5>
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="col-12">
+            <h5>Calle: *</h5>
+            <input id="calle" type="text" [pKeyFilter]="regexNumDir_KF" formControlName="calle" placeholder="Calle" pInputText class="w-full" style="padding:1rem">
+        </div>
+
+        <div class="col-12">
+            <div class="grid">
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Número Exterior: *</h5>
+                    <input id="numero_exterior" [pKeyFilter]="regexNumDir_KF" type="text" formControlName="numero_exterior" placeholder="Numero Exterior" pInputText class="w-full" style="padding:1rem">
+                </div>
+    
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Número Interior: *</h5>
+                    <input id="numero_interior" [pKeyFilter]="regexNumDir_KF" type="text" formControlName="numero_interior" placeholder="Numero Interior" pInputText class="w-full" style="padding:1rem">
+                </div>
+    
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Ciudad: *</h5>
+                    <!-- <p-dropdown (onChange)="ciudad($event)" placeholder="Ciudad" formControlName="ciudad" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="ciudad" [showClear]="true"></p-dropdown> -->
+                    <p-dropdown placeholder="Ciudad" formControlName="ciudad" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="ciudades" [showClear]="true" [disabled]="true"></p-dropdown>
+                </div>
+
+            </div>
+            
+        </div>
+
+        <div class="col-12">
+            <div class="grid">
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Demarcación Territorial: *</h5>
+                    <p-dropdown placeholder="Demarcación Territorial" formControlName="demarcacion_territorial" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="ciudades" [showClear]="true"></p-dropdown>
+                </div>
+    
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Código Postal: *</h5>
+                    <p-inputMask mask="99999" formControlName="codigo_postal" placeholder="14386" slotChar=""></p-inputMask>
+                </div>
+    
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Colonia: *</h5>
+                    <!-- <p-dropdown (onChange)="ciudad($event)" placeholder="Ciudad" formControlName="ciudad" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="ciudad" [showClear]="true"></p-dropdown> -->
+                    <p-dropdown placeholder="Colonia" formControlName="colonia" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="colonias" [showClear]="true"></p-dropdown>
+                </div>
+
+            </div>
+            
+        </div>
+
+        <div class="col-12">
+            <div class="grid">
+
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Sección Electoral: *</h5>
+                    <p-inputMask mask="9999" formControlName="seccion_electoral" placeholder="0747" slotChar=""></p-inputMask>
+                </div>
+
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Circunscripción</h5>
+                    <p-inputMask mask="99" formControlName="circunscripcion" placeholder="01" slotChar="" [characterPattern]="regexCircunscripcion"></p-inputMask>
+                </div>
+
+                <div class="col-12 md:col-4 lg:col-4">
+                    <h5>Tiempo de residencia: *</h5>
+                    <div class="grid">
+                        <div class="col-6">
+                            <div class="flex justify-content-start">
+                                <p-inputMask class="flex align-items-center justify-content-center mr-2" mask="99" formControlName="anios" placeholder="01" slotChar=""></p-inputMask>
+                                <span class="flex align-items-center justify-content-center">Años</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="flex justify-content-start">
+                                <p-inputMask class="flex align-items-center justify-content-center mr-2" mask="99" formControlName="meses" placeholder="01" slotChar="" [characterPattern]="regexMeses"></p-inputMask>
+                                <span class="flex align-items-center justify-content-center">Meses</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+                <div class="col-12">
+                    <hr>
+                </div>
+
+                <div class="col-12">
+                    <div class="grid">
+                        <div class="col-12">
+                            <h5>Carga de Documento: *</h5>
+                        </div>
+                        <div class="col-12">
+                            <span>
+                                En el siguiente apartado deberás adjuntar alguna de la
+                                siguiente documentación, que compruebe el domicilio y 
+                                tiempo de residencia.
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span>
+                                1. Credencial de elector, siempre que se observe la dirección
+                                completa (con calle y número), y coincida con el domicilio
+                                registrado.
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span>
+                                2. Constancia de residencia, expedida por la Alcaldía
+                                correspondiente. Deberá especificar el tiempo de residencia.
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span>
+                                3. Instrumento notarial.
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <p-fileUpload name="documento[]" [auto]="true" (onSelect)="subirArchivo('actaNacimiento', $event)" [fileLimit]="1" [maxFileSize]="6000000" accept=".pdf"></p-fileUpload>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+        <div class="col-12">
+
+            <div class="grid">
+                <div class="col-6">
+                    <button pButton pRipple type="button" label="Anterior" class="w-full p-3 text-xl p-button-danger"></button>
+                </div>
+
+                <div class="col-6">
+                    <button pButton pRipple type="submit" label="Siguiente" class="w-full p-3 text-xl p-button-success" [disabled]="form.invalid"></button>
+                </div>
+            </div>
+
+        </div>
+        
+
+
+
+
+
+
+
+    </div>
+</form>

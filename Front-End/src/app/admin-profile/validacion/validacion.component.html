@@ -1,0 +1,52 @@
+<p-toast></p-toast>
+
+<div class="card">
+<!-- [tableStyle]="{'min-width': '70rem'}" -->
+    <p-table #dt [value]="usuarios" [rows]="10" [paginator]="true" [globalFilterFields]="['nombres', 'primer_apellido','segundo_apellido','estado']"
+        [rowHover]="true" dataKey="id_comite"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Validación de registros</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText #textInput type="text" (input)="dt.filterGlobal(textInput.value, 'contains')" placeholder="Buscar..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <!-- <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th> -->
+                <th pSortableColumn="nombres">Nombre(s)<p-sortIcon field="nombres"></p-sortIcon></th>
+                <th pSortableColumn="primer_apellido">Primer apellido<p-sortIcon field="primer_apellido"></p-sortIcon></th>
+                <th pSortableColumn="segundo_apellido">Segundo apellido <p-sortIcon field="segundo_apellido"></p-sortIcon></th>
+                <th pSortableColumn="estado" style="min-width:10rem">Estado validación <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-usuario>
+            <tr [ngClass]="{'eliminado': usuario.estado === 0}">
+                <td>{{usuario.nombres}}</td>
+                <td>{{usuario.primer_apellido}}</td>
+                <td>{{usuario.segundo_apellido}}</td>
+                <td>
+                    <ng-container *ngIf="usuario.validado; else elseTemplate">
+                        <!-- Validado -->
+                        <p-tag styleClass="mr-2" icon="pi pi-check" severity="info" value="Validado"></p-tag>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <button [loading]="usuario.loading" [disabled]="usuario.estado > 0" pButton pRipple type="button" label="Por validar" class="p-button-raised p-button-success" (click)="validarCuentaUsuario(usuario.id_usuario)"></button>
+                    </ng-template>
+                    
+                    <!-- boton -->
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                En total hay {{ usuarios.length }} usuario{{usuarios.length != 1 ? 's': ''}}
+            </div>
+        </ng-template>
+    </p-table>
+</div>

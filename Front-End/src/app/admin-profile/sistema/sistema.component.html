@@ -1,0 +1,47 @@
+<div class="card">
+    <h5>Estado del sistema</h5>
+    <form [formGroup]="formConfiguracionSistema" #pnl (submit)="submit()">
+        <!-- {{estado_sistema}} -->
+        <p-messages [severity]="severity">
+            <ng-template pTemplate>
+                <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
+                <i class="pi pi-spin pi-spinner" style="font-size: 2rem" *ngIf="txt_estado === 'Cargando...'; else otroEstado"></i>
+                <ng-template #otroEstado>
+                    <i class="pi pi-times" style="font-size: 2rem" *ngIf="estado_sistema === 0"></i> <!--cerrado-->
+                    <i class="pi pi-check" style="font-size: 2rem" *ngIf="estado_sistema === 1"></i> <!--activo-->
+                    <i class="pi pi-file-edit" style="font-size: 2rem" *ngIf="estado_sistema === 3"></i> <!--generadas-->
+                    <i class="pi pi-check" style="font-size: 2rem" *ngIf="estado_sistema === 4"></i> <!--enviadas-->
+                    <i class="pi pi-ban" style="font-size: 2rem;" *ngIf="estado_sistema === 2"></i> <!--cerrado antes de fecha-->
+                </ng-template>
+                <div class="ml-2"> {{ txt_estado === 'Cargando...' ? '' : 'Actualmente el sistema se encuentra' }} {{ txt_estado }}</div>
+            </ng-template>
+        </p-messages>
+        <div class="p-fluid p-formgrid grid" *ngIf="estado_sistema < 3">
+            <div class="field col-12">
+                <label htmlFor="firstname2" style="color: orange;">
+                    <b>
+                        Cambiar estado del sistema a:
+                    </b>
+                </label>
+                <p-selectButton [options]="justifyOptions" formControlName="estado" optionLabel="label" optionValue="value">
+                </p-selectButton>
+                <!-- {{ formConfiguracionSistema.value | json }} -->
+            </div>
+        </div>
+        <button *ngIf="estado_sistema < 3" [disabled]="!formConfiguracionSistema.valid" pButton pRipple type="submit" label="Guardar y continuar"
+            class="w-full p-3 text-xl iecm-button-primary" icon="pi pi-save" iconPos="right"></button>
+    </form>
+
+    <!-- {{ formConfiguracionSistema.value | json }} -->
+
+
+
+    <div class="m-2 p-2" *ngIf="estado_sistema >= 2 || estado_sistema === 0">
+        <h5>Constancias <i class="pi pi-envelope mr-4 p-text-secondary" severity="warning" pBadge style="font-size: 2rem" value="!"></i></h5>
+        <span class="p-buttonset">
+            <button [loading]="loadingGenerarConstancias" [disabled]="estado_sistema >= 2 && estado_sistema === 0 || estado_sistema >= 3" [ngClass]="{'p-button-warning': estado_sistema <= 2, 'p-button-success': estado_sistema >= 3}" pButton pRipple label="Generar constancias" class="" (click)="generarConstancias();" icon="pi pi-file-export" type="button"></button>
+            <!-- <button pButton pRipple label="Delete" icon="pi pi-trash"></button> -->
+            <button  [loading]="loadingEnviarConstancias" [disabled]="estado_sistema === 4 || estado_sistema < 3"  pButton pRipple label="Enviar constancias" iconPos="right" class="" [ngClass]="{'p-button-danger': estado_sistema <= 3, 'p-button-success': estado_sistema > 3}" (click)="enviarConstancias()" type="button" icon="pi pi-send"></button>
+        </span>
+    </div>
+</div>

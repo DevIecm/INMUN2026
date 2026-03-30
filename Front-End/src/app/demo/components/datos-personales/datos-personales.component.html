@@ -1,0 +1,39 @@
+<div class="grid">
+    <div class="col-12">
+        <app-titulo [titulo]="'Datos Personales'"></app-titulo>
+    </div>
+
+
+    <div class="col-12">
+        <div class="card p-fluid">
+            <div class="grid">
+    
+    
+                <div class="col-12">
+                    <span>Este apartado debes llenarlo con tus datos personales. 
+                          La información será tratada de conformidad con el aviso
+                          de privacidad del Instituto Electoral de la Ciudad de 
+                          México, que puedes consultar en el menú "Aviso de privacidad".</span>
+                </div>
+    
+                <div class="col-12">
+                    <span [ngStyle]="{color:'var(--red-500)'}">Todos los campos son obligatorios</span>
+                </div>
+    
+                <div class="col-12">
+
+                        <app-formulario></app-formulario>
+    
+                </div>
+    
+    
+    
+            </div>
+        </div>
+    </div>
+    
+
+
+
+</div>
+

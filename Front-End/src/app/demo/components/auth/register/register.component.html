@@ -1,0 +1,234 @@
+<div class="grid mr-1 ml-1">
+    <div class="flex flex-wrap align-items-center justify-content-center sm:col-12 md:col-6 lg:col-6 bg-iecm">
+        <!-- Fondo Purple con logo IECM -->
+        <!-- <p>Lorem ipsum dolor sit.</p> -->
+        <img src="assets/layout/images/iecm/logo-whitetxt.png" class="img-iecm-login">
+
+    </div>
+
+    <div class="sm:col-12 md:col-6 lg:col-6">
+        <!-- Login -->
+
+        <div
+            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(140, 101, 170, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                <a class="grid layout-topbar-logo ml-4 justify-content-center">
+                    <img src="assets/images/inmun.jpg" alt="logo del INMUN" style="height: 8.5rem !important;">
+                </a>
+                <div class="text-center mb-5">
+                    <div class="text-900 text-4xl font-medium mb-2">Sistema de registro INMUN 2026</div>
+                    <span class="text-700 text-xl text-black-alpha-90 font-medium mb-3">Nueva Cuenta</span>
+                </div>
+                <span class="block text-600 font-medium mb-3 text-center">¡Importante!</span>
+
+                <div class="flex flex-wrap align-items-center">
+
+                    <div class="surface-overlay">
+                        <p class="text-justify">
+                            La información que se capture a partir de este momento deberá corresponder con los datos
+                            de la
+                            persona participante.
+                            Si eres madre, padre, tutora o tutor de una persona menor de edad deberás capturar los
+                            datos de
+                            la persona menor de edad.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- <hr> -->
+                <p-divider align="left" class="p-2 m-2">
+                    <div class="inline-flex align-items-center">
+                        <i class="pi pi-user mr-2"></i>
+                        <span class="text-sm">
+                            Llena los siguientes campos para generar Usuario y Contraseña para el registro
+                        </span>
+                    </div>
+                </p-divider>
+
+                <form [formGroup]="formRegister" (submit)="submit()" *ngIf="estado_sistema === 1;">
+                    <p-tag styleClass="m-2" *ngIf="formRegister.invalid" class="flex justify-content-end flex-wrap"
+                        icon="pi pi-exclamation-triangle" severity="warning"
+                        value="Todos los campos son obligatorios"></p-tag>
+                    <div class="p-fluid">
+                        <div class="field">
+                            <label for="nombres">Nombre(s)</label>
+                            <input pInputText id="nombres" type="text" formControlName="nombres" #nombres
+                                (input)="formRegister.get('nombres')?.reset(nombres.value.toUpperCase())">
+                        </div>
+                        <div class="field">
+                            <label for="primer_apellido">Primer apellido</label>
+                            <input pInputText id="primer_apellido" type="text" formControlName="primer_apellido"
+                                #primer_apellido
+                                (input)="formRegister.get('primer_apellido')?.reset(primer_apellido.value.toUpperCase())">
+                        </div>
+                        <div class="field">
+                            <label for="segundo_apellido">Segundo apellido</label>
+                            <input pInputText id="segundo_apellido" type="text" formControlName="segundo_apellido"
+                                #segundo_apellido
+                                (input)="formRegister.get('segundo_apellido')?.reset(segundo_apellido.value.toUpperCase())">
+                        </div>
+                        <div class="field">
+                            <label for="genero">Sexo</label>
+                            <p-dropdown id="genero" [options]="selGenero" formControlName="genero"
+                                placeholder="Selecciona" optionValue="genero" optionLabel="descripcion_genero"
+                                [showClear]="true">
+                            </p-dropdown>
+                        </div>
+                        <div class="field">
+                            <label for="fecha_nacimientoo">Fecha de nacimiento</label>
+                            <p-calendar (onSelect)="calculaEdad($event);" [showIcon]="true" dateFormat="yy/mm/dd"
+                                [readonlyInput]="true" formControlName="fecha_nacimiento" view="date"
+                                inputId="fecha_nacimientoo" [showClear]="true" [minDate]="minDate"
+                                [maxDate]="maxDate"></p-calendar>
+                        </div>
+                        <div class="field">
+                            <label for="edad">Edad</label>
+                            <input pInputText id="edad" type="text" [disabled]="true" [readOnly]="true"
+                                formControlName="edad">
+                        </div>
+
+                        <div class="field">
+                            <label for="curp">CURP</label>
+                            <!-- <p-inputMask mask="aaaa*99999aaaaa**9" formControlName="curp" class="w-full" #curp (input)="formRegister.get('curp')?.reset(curp.value.toUpperCase())"></p-inputMask> -->
+                            <p-inputMask mask="aaaa*99999aaaaa**9" [style]="{'width':'100%'}" formControlName="curp"
+                                slotChar="" [autoClear]="false" class="w-full"></p-inputMask>
+
+                            <small class="p-error block" *ngIf="campoNoValido('curp');">Las CURPS no coinciden</small>
+                        </div>
+
+                        <div class="field">
+                            <label for="curp_repetir">Repetir CURP</label>
+                            <!-- <p-inputMask mask="aaaa*99999aaaaa**9" id="curp_repetir" (paste)="(false)" formControlName="curp_repetir" class="w-full" #curp_repetir (input)="formRegister.get('curp_repetir')?.reset(curp_repetir.value.toUpperCase())" ></p-inputMask> -->
+                            <p-inputMask mask="aaaa*99999aaaaa**9" [style]="{'width':'100%'}"
+                                formControlName="curp_repetir" slotChar="" class="w-full" [autoClear]="false"
+                                (paste)="(false)"></p-inputMask>
+                            <small class="p-error block" *ngIf="campoNoValido('curp_repetir');">Las CURPS no
+                                coinciden</small>
+                        </div>
+
+                        <div class="field">
+                            <label for="usuario">Usuario</label>
+                            <!-- <input type="text" id="usuario" pInputText [pKeyFilter]="blockSpace" formControlName="usuario"> -->
+                            <input #usuario id="usuario" formControlName="usuario" type="text" pInputText
+                                pKeyFilter="alphanum">
+                            <small [ngStyle]="{color:'var(--purple-600)'}" id="usuario-help" class="block">El nombre del
+                                usuario NO debe contener espacios, acentos, la letra ñ o caracteres especiales. Debe
+                                tener como mínimo 8 caracteres.</small>
+
+                            <!-- <input #usuario id="usuario" formControlName="usuario" type="text" pInputText [pKeyFilter]="blockSpecial" placeholder="Block # < > * !"> -->
+
+
+                        </div>
+
+                        <div class="field">
+                            <label for="correo_electronico">Correo electrónico</label>
+                            <input pInputText id="correo_electronico" type="text" formControlName="correo_electronico">
+                            <small class="p-error block" *ngIf="campoNoValido('correo_electronico');">El formato del
+                                correo electrónico no es válido</small>
+                        </div>
+
+                        <div class="field">
+                            <label for="correo_electronico_repetir">Repetir correo electrónico</label>
+                            <input pInputText id="correo_electronico_repetir" (paste)="(false)" type="text"
+                                formControlName="correo_electronico_repetir">
+                            <small class="p-error block" *ngIf="campoNoValido('correo_electronico_repetir');">Los
+                                correos registrados no coinciden</small>
+                        </div>
+
+                        <div class="field">
+                            <label for="contrasena">Contraseña</label>
+                            <p-password id="contrasena" [feedback]="true" weakLabel="Débil" mediumLabel="Media"
+                                strongLabel="Fuerte" promptLabel="Ingresa una contraseña" formControlName="contrasena"
+                                [toggleMask]="true"></p-password>
+                            <small class="p-error block" *ngIf="campoNoValido('contrasena');">La contraseña es
+                                obligatoria y mínimo 8 caracteres</small>
+                        </div>
+
+                        <div class="field">
+                            <label for="contrasena_repetir">Repetir contraseña</label>
+                            <p-password id="contrasena_repetir" [feedback]="true" (paste)="(false)" weakLabel="Débil"
+                                mediumLabel="Media" strongLabel="Fuerte" promptLabel="Ingresa una contraseña"
+                                formControlName="contrasena_repetir" [toggleMask]="true"></p-password>
+                            <small class="p-error block" *ngIf="campoNoValido('contrasena_repetir');">Las contraseñas
+                                capturadas no coinciden</small>
+                        </div>
+
+                        <!-- <p-button label="Guardar" icon="pi pi-check" iconPos="right"
+                            class="w-full mt-3 p-3 text-xl iecm-button-primary"></p-button> -->
+                    </div>
+
+                    <!-- <recaptcha (scriptLoad)="onScriptLoad();" (ngModelChange)="changeeed($event)"  (scriptError)="onScriptError()" formControlName="captcha"></recaptcha> -->
+
+                    <!-- <button [disabled]="!formRegister.valid" pButton pRipple type="submit" label="Guardar"
+                            class="w-full p-3 text-xl iecm-button-primary" icon="pi pi-save" iconPos="right"></button> -->
+
+                    <p-tag styleClass="m-2" *ngIf="formRegister.invalid" class="flex justify-content-end flex-wrap"
+                        icon="pi pi-exclamation-triangle" severity="warning"
+                        value="Todos los campos son obligatorios"></p-tag>
+
+
+                    <button [disabled]="!formRegister.valid" type="submit"
+                        class="w-full p-3 text-xl iecm-button-primary" label="Guardar" icon="pi pi-save" iconPos="right"
+                        [loading]="loading" pButton></button>
+
+
+                    <!-- {{ formRegister.valid }} -->
+                </form>
+
+                <!-- 0 -->
+                <p-messages severity="warn" *ngIf="estado_sistema === 0;">
+                    <ng-template pTemplate>
+                        <i class="pi pi-times" style="font-size: 2rem"></i>
+                        <div class="ml-2">
+                            El sistema se encuentra cerrado
+                        </div>
+                    </ng-template>
+                </p-messages>
+
+                <!-- 2 -->
+                <p-messages *ngIf="estado_sistema === 2;" severity="warn">
+                    <ng-template pTemplate>
+                        <i class="pi pi-ban" style="font-size: 2rem;"></i>
+                        <div class="ml-2">
+                            Lo sentimos, las inscripciones se han cerrado antes de tiempo, espera más noticias sobre
+                            nosotros.
+                        </div>
+                    </ng-template>
+                </p-messages>
+
+                <!-- cargando -->
+                <p-messages
+                    *ngIf="!estado_sistema && estado_sistema !== 4 && estado_sistema !== 1 && estado_sistema !== 2 && estado_sistema !== 0"
+                    severity="info">
+                    <ng-template pTemplate>
+                        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                        <div class="ml-2">
+                            Estamos cargando el estado del sistema, espera un momento...
+                        </div>
+                    </ng-template>
+                </p-messages>
+
+                <!-- 4 -->
+                <p-messages *ngIf="estado_sistema === 4;" severity="error">
+                    <ng-template pTemplate>
+                        <div class="ml-2">
+                            Espere un momento o hable con el administrador.
+                        </div>
+                    </ng-template>
+                </p-messages>
+
+                <!-- {{ formRegister.value | json }} -->
+            </div>
+        </div>
+
+        <button pButton pRipple label="¿Ya tienes una cuenta? Inicia sesión aquí"
+            class="w-full mt-3 p-3 text-xl p-button-secondary" [routerLink]="['/auth/login']"></button>
+    </div>
+
+</div>
+
+<div class="layout-footer text-center pb-2">
+    <span class="font-medium ml-2">Instituto Electoral de la Ciudad de México &bull; Huizaches 25 &bull; Rancho Los
+        Colorines &bull; Tlalpan &bull; C.P. 14386 &bull; Ciudad de México &bull; Conmutador: (55) 5483 3800
+        {{version}}</span>
+</div>

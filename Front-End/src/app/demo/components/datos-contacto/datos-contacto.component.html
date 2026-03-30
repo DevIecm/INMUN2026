@@ -1,0 +1,79 @@
+<div class="grid">
+
+    <div class="col-12">
+        <app-titulo [titulo]="'Datos Contacto'"></app-titulo>
+    </div>
+
+
+    <div class="col-12">
+        <div class="card p-fluid">
+
+            <div *ngIf="!formPosted" class="col-12">
+                <div class="grid">
+                    
+                    <div class="col-12">
+                        <span>
+                            En este apartado debes llenar tus números y tu correo electrónico.
+                            Es importante que la información que proporciones nos permita ponernos
+                            en comunicación contigo, para aclarar tus dudas respecto a tu
+                            documentación y la información que registres en el SIREC.
+                        </span>
+                    </div> 
+
+                    <div class="col-12">
+
+                        <span>
+                            El correo electrónico debe ser el mismo con el que ingresas al SIREC,
+                            y será a través del cual te remitamos las notificaciones correspondientes.
+                        </span>
+                        
+                    </div>
+
+                    <div class="col-12">
+
+                        <span [ngStyle]="{color:'var(--red-500)'}">
+                            Los campos con * son obligatorios
+                        </span>
+                        
+                    </div>
+        
+                    <div class="col-12">
+        
+                        <app-informacion (formEstado)="estado($event)"></app-informacion>
+        
+                    </div>
+                    
+
+
+                </div>
+            </div>
+
+
+
+            <div *ngIf="formPosted" class="col-12">
+                <app-carga-documentos></app-carga-documentos>
+            </div>
+            
+
+            
+
+            
+
+
+
+        </div>
+        
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+

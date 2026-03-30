@@ -1,0 +1,16 @@
+<form [formGroup]="formSelectComite" (submit)="guardarEleccionComite()">
+
+    <div class="p-fluid">
+        <div class="field">
+            <label for="comite">Selecciona el comité al que deseas integrarte</label>
+            <p-dropdown id="comite" (onChange)="buscarCupoo($event.value);" [options]="comite" [readonly]="disabled" formControlName="id_comite" placeholder="Selecciona el comité"
+                optionValue="id_comite" optionLabel="nombre_comite" [showClear]="!disabled" optionDisabled="disabled"></p-dropdown>
+        </div>
+    </div>
+
+    <p-tag styleClass="m-2" *ngIf="!formSelectComite.valid" class="flex justify-content-end flex-wrap" icon="pi pi-exclamation-triangle" severity="warning" value="Todos los campos son obligatorios"></p-tag>
+
+    <button [disabled]="!formSelectComite.valid || disabled" pButton pRipple type="submit" label="Guardar y continuar"
+        class="w-full p-3 text-xl iecm-button-primary" icon="pi pi-save" iconPos="right"></button>
+    <!-- <pre>{{ formSelectComite.value | json }}</pre> -->
+</form>

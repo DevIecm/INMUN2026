@@ -1,0 +1,197 @@
+<div class="grid">
+
+    <!-- {{ usuario.edad }}
+    {{ habilita_o_no_input_text }} -->
+    <form [formGroup]="formPermisos" (submit)="submitPermisos()" *ngIf="mayor_edad">
+
+
+        <div class="pt-3 ml-3">
+            <div class=" p-fluid">
+                <div class="field grid align-items-center">
+                    <label for="conoce_acepta_terminos_convocatoria" class="col-8 mb-2 md:col-10 sm:col-6 md:mb-0">
+                        <p>
+                            Conozco y acepto los términos establecidos en la <a [href]="convocatoria"
+                                target="_blank">convocatoria</a> del INMUN
+                            2026.
+
+                        </p>
+                    </label>
+                    <div class="col-4 md:col-2 sm:col-6">
+                        <p-checkbox id="conoce_acepta_terminos_convocatoria" [binary]="true"
+                            formControlName="conoce_acepta_terminos_convocatoria" inputId="binary"
+                            [readonly]="cierra_registro"></p-checkbox>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="field grid align-items-center">
+                    <label for="ha_leido_aviso_privacidad" class="col-8 mb-2 md:col-10 sm:col-6 md:mb-0">
+                        <p>
+                            He leído el <a [href]="aviso_privacidad" target="_blank">Aviso de privacidad</a> del Sistema
+                            de registro
+                            de participantes en los concursos para la promoción de la
+                            participación ciudadana y divulgación de la cultura
+                            democrática.
+                        </p>
+                    </label>
+                    <div class="col-4 md:col-2 sm:col-6">
+                        <p-checkbox [readonly]="cierra_registro" id="ha_leido_aviso_privacidad" [binary]="true"
+                            formControlName="ha_leido_aviso_privacidad" inputId="binary"></p-checkbox>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid align-items-center">
+                    <label for="autoriza_uso_imagen" class="col-8 mb-2 md:col-10 sm:col-6 md:mb-0">
+                        <p>
+                            Autorizo el uso de la imagen para las actividades
+                            derivadas del INMUN 2026. Autorizo al Instituto Electoral
+                            de la Ciudad de México (IECM), para que utilice libremente
+                            y a título gratuito la imagen total o parcial, en materiales y
+                            actividades de difusión; en materiales de campaña, de
+                            educación cívica, de divulgación de la cultura democrática
+                            y temas relativos; y, de manera enunciativa más no
+                            limitativa, para reproducirlo por cualquier otro medio
+                            impreso, fonográfico, gráfico, plástico, audiovisual,
+                            electrónico, fotográfico; siempre y cuando se atienda al
+                            cumplimiento de los fines institucionales del IECM en
+                            materia de divulgación de la cultura democrática y
+                            educación cívica o cualquier otro.
+                        </p>
+                    </label>
+                    <div class="col-4 md:col-2 sm:col-6">
+                        <p-checkbox [readonly]="cierra_registro" id="autoriza_uso_imagen" [binary]="true"
+                            formControlName="autoriza_uso_imagen" inputId="autoriza_uso_imagen"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p-progressBar class="m-2" mode="indeterminate" *ngIf="submited"
+            [style]="{'height': '6px', 'background': '#FFF'}"></p-progressBar>
+        <p-tag styleClass="m-2" *ngIf="!formPermisos.valid" class="flex justify-content-end flex-wrap"
+            icon="pi pi-exclamation-triangle" severity="warning" value="Todos los campos son obligatorios"></p-tag>
+
+        <button [disabled]="!formPermisos.valid || cierra_registro" type="submit"
+            class="w-full p-3 m-3 text-xl iecm-button-primary" label="Guardar y terminar" icon="pi pi-save"
+            iconPos="right" [loading]="loading" pButton pRipple></button>
+        <!-- <pre>{{ formPermisos.value | json }}</pre> -->
+    </form>
+
+    <form [formGroup]="formPermisosMenor" (submit)="submitPermisosMenor()" *ngIf="!mayor_edad">
+
+
+        <div class="pt-3 ml-3">
+            <div class=" p-fluid">
+                <div class="field grid align-items-center mt-5">
+                    <label for="conoce_acepta_terminos_convocatoria" class="col-8 mb-2 md:col-10 sm:col-6 md:mb-0">
+                        <p>
+                            Conozco y acepto los términos establecidos en la <a [href]="convocatoria"
+                                target="_blank">convocatoria</a> del INMUN
+                            2026.
+                        </p>
+                    </label>
+                    <div class="col-4 md:col-2 sm:col-6">
+                        <p-checkbox id="conoce_acepta_terminos_convocatoria" [binary]="true"
+                            formControlName="conoce_acepta_terminos_convocatoria" inputId="binary"
+                            [readonly]="cierra_registro"></p-checkbox>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid align-items-center">
+                    <label for="ha_leido_aviso_privacidad" class="col-8 mb-2 md:col-10 sm:col-6 md:mb-0">
+                        <p>
+                            He leído el <a [href]="aviso_privacidad" target="_blank">Aviso de privacidad</a>
+                            del Sistema de registro
+                            de participantes en los concursos para la promoción de la
+                            participación ciudadana y divulgación de la cultura
+                            democrática.
+                        </p>
+                    </label>
+                    <div class="col-4 md:col-2 sm:col-6">
+                        <p-checkbox [readonly]="cierra_registro" id="ha_leido_aviso_privacidad" [binary]="true"
+                            formControlName="ha_leido_aviso_privacidad" inputId="binary"></p-checkbox>
+                    </div>
+                </div>
+                <hr>
+                <div class="field flex align-items-center align-content-center">
+                    <label for="conoce_acepta_terminos_convocatoria" class="col-8 mb-2 md:col-10 sm:col-6 md:mb-0">
+                        <p style="display: ruby;">
+                            Yo &nbsp;
+                            <p-inplace pAnimate enterClass="flipright" leaveClass="fadeoutleft"
+                                class="animation-duration-1000 animation-ease-out"
+                                [disabled]="!habilita_o_no_input_text" [closable]="false" [active]="active_input"
+                                (onDeactivate)="limpiaCampo('nombre_tutor');">
+                                <ng-template pTemplate="display">
+                                    <p-tag severity="warning" icon="pi pi-pencil" value="Click para editar"></p-tag>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <input type="text" formControlName="nombre_tutor"
+                                        placeholder="Nombre del padre, madre o tutor" class="ml-2" pInputText
+                                        [readonly]="cierra_registro">
+                                </ng-template>
+                            </p-inplace> &nbsp;
+                            Madre, Padre y/o Persona tutora,
+                            con clave de elector &nbsp;
+                            <p-inplace pAnimate enterClass="flipright" leaveClass="fadeoutleft"
+                                class="animation-duration-1000 animation-ease-out"
+                                [disabled]="!habilita_o_no_input_text" [closable]="false" [active]="active_input"
+                                (onDeactivate)="limpiaCampo('curp_tutor');">
+                                <ng-template pTemplate="display">
+                                    <p-tag severity="warning" icon="pi pi-pencil" value="Click para editar"></p-tag>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <input type="text" formControlName="curp_tutor" maxlength="18"
+                                        placeholder="Clave de elector padre, madre o tutor" class="ml-2 mr-2" pInputText
+                                        [readonly]="cierra_registro">
+                                </ng-template>
+                            </p-inplace>
+                            &nbsp; con parentesco &nbsp;
+                            <p-inplace pAnimate enterClass="flipright" leaveClass="fadeoutleft"
+                                class="animation-duration-1000 animation-ease-out"
+                                [disabled]="!habilita_o_no_input_text" [closable]="false" [active]="active_input"
+                                (onDeactivate)="limpiaCampo('parentesco');">
+                                <ng-template pTemplate="display">
+                                    <p-tag severity="warning" icon="pi pi-pencil" value="Click para editar"></p-tag>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <p-dropdown [readonly]="cierra_registro" [options]="parentescoSel"
+                                        formControlName="parentesco" placeholder="Seleccione"
+                                        optionLabel="descripcion_parentesco" optionValue="parentesco"></p-dropdown>
+                                </ng-template>
+                            </p-inplace>
+                            , autorizo el uso de imagen
+                            de la persona menor de edad &nbsp;
+                            <b>{{ usuario.nombres + ' ' + usuario.primer_apellido + ' ' + usuario.segundo_apellido
+                                }}</b>, para las actividades derivadas del INMUN 2026. Autorizo al
+                            Instituto Electoral de la Ciudad de México (IECM), para
+                            que utilice libremente y a título gratuito la imagen total o
+                            parcial, en materiales y actividades de difusión; en
+                            materiales de campaña, de educación cívica, de
+                            divulgación de la cultura democrática y temas relativos; y,
+                            de manera enunciativa más no limitativa, para reproducirlo
+                            por cualquier otro medio impreso, fonográfico, gráfico,
+                            plástico, audiovisual, electrónico, fotográfico; siempre y
+                            cuando se atienda al cumplimiento de los fines
+                            institucionales del IECM en materia de divulgación de la
+                            cultura democrática y educación cívica o cualquier otro.
+                        </p>
+                    </label>
+                    <div class="col-4 md:col-2 sm:col-6">
+                        <p-checkbox [readonly]="cierra_registro" id="autoriza_uso_imagen" [binary]="true"
+                            formControlName="autoriza_uso_imagen" inputId="autoriza_uso_imagen"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p-progressBar class="m-2" mode="indeterminate" *ngIf="submited"
+            [style]="{'height': '6px', 'background': '#FFF'}"></p-progressBar>
+        <p-tag styleClass="m-2" *ngIf="!formPermisosMenor.valid" class="flex justify-content-end flex-wrap"
+            icon="pi pi-exclamation-triangle" severity="warning" value="Todos los campos son obligatorios"></p-tag>
+        <button [disabled]="!formPermisosMenor.valid || cierra_registro" type="submit"
+            class="w-full p-3 m-3 text-xl iecm-button-primary" label="Guardar y terminar" icon="pi pi-save"
+            iconPos="right" [loading]="loading" pButton pRipple></button>
+        <!-- <pre>{{ formPermisosMenor.value | json }}</pre> -->
+    </form>
+
+
+</div>

@@ -1,0 +1,35 @@
+<div class="grid">
+    <div class="col-12">
+        <h5>Descarga el Formato de validación de notificaciones electrónicas</h5>
+        <button pButton pRipple type="button" label="Descargar Archivo" class="w-full p-3 text-xl iecm-button-primary"></button>
+    </div>
+
+    <div class="col-12">
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <h5>Carga de documentos:</h5>
+    </div>
+
+    <div class="col-12">
+        <form>
+
+            <div class="grid">
+                <div class="col-12">
+
+                    <h5>Formato de validación de notificaciones electrónicas: *</h5>
+                    <p-fileUpload name="formatoValNot[]" [auto]="true" (onSelect)="subirArchivo('formatoValNot', $event)" [fileLimit]="1" [maxFileSize]="6000000" accept=".pdf"></p-fileUpload>
+
+                </div>
+            </div>
+            
+
+        </form>
+
+        
+    </div>
+
+
+
+</div>

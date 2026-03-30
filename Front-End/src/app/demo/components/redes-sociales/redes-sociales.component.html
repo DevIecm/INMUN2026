@@ -1,0 +1,80 @@
+<div class="grid">
+
+    <div class="col-12">
+        <app-titulo [titulo]="'Redes Sociales'"></app-titulo>
+    </div>
+
+    <div class="col-12">
+
+
+        <div class="card p-fluid">
+            <div class="grid">
+
+                <div class="col-12">
+                    <span>
+                        En este apartado, deberás registrar los enlaces de tus redes sociales
+                        personales o aquellas que utilices para el proceso de captación de
+                        apoyo ciudadano.
+                    </span>
+                </div>
+
+                <div class="col-12">
+                    <form [formGroup]="form" (ngSubmit)="submit()">
+                        <div class="grid">
+
+                            <div class="col-12">
+                                <h5>Facebook:</h5>
+                                <input id="facebook" type="text" formControlName="facebook" placeholder="Facebook" pInputText class="w-full" style="padding:1rem">
+                            </div>
+
+                            <div class="col-12">
+                                <h5>Instagram:</h5>
+                                <input id="instagram" type="text" formControlName="instagram" placeholder="Instagram" pInputText class="w-full" style="padding:1rem">
+                            </div>
+
+                            <div class="col-12">
+                                <h5>Youtube:</h5>
+                                <input id="youtube" type="text" formControlName="youtube" placeholder="Youtube" pInputText class="w-full" style="padding:1rem">
+                            </div>
+
+                            <div class="col-12">
+                                <h5>Página web:</h5>
+                                <input id="web" type="text" formControlName="web" placeholder="Web" pInputText class="w-full" style="padding:1rem">
+                            </div>
+
+                            <div class="col-12">
+                                <h5>Twitter:</h5>
+                                <input id="twitter" type="text" formControlName="twitter" placeholder="Twitter" pInputText class="w-full" style="padding:1rem">
+                            </div>
+
+                            <div class="col-12">
+                                <h5>Tiktok:</h5>
+                                <input id="tiktok" type="text" formControlName="tiktok" placeholder="TikTok" pInputText class="w-full" style="padding:1rem">
+                            </div>
+
+                            <div class="col-12">
+                                <div class="grid">
+                                    <div class="col-6">
+                                        <button pButton pRipple type="button" label="Anterior" class="w-full p-3 text-xl p-button-danger"></button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button pButton pRipple type="submit" label="Siguiente" class="w-full p-3 text-xl p-button-success"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

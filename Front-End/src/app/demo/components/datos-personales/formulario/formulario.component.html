@@ -1,0 +1,227 @@
+<form [formGroup]="form">
+
+    <div class="grid">
+
+        <div class="col-12">
+    
+            <div class="mb-3">
+                <h5>Nombre (s): *</h5>
+                <input id="nombres" type="text" formControlName="nombres" [pKeyFilter]="regexString_KF" placeholder="Nombres" pInputText class="w-full" style="padding:1rem">
+            </div>
+        
+        </div>
+        
+        <div class="col-12">
+            <div class="grid">
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>Primer Apellido: *</h5>
+                    <input id="apellido_paterno" type="text" formControlName="apellido_paterno" [pKeyFilter]="regexString_KF" placeholder="Primer Apellido" pInputText class="w-full" style="padding:1rem">
+                </div>
+            
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>Segundo Apellido: *</h5>
+                    <input id="apellido_materno" type="text" formControlName="apellido_materno" [pKeyFilter]="regexString_KF" placeholder="Segundo Apellido" pInputText class="w-full" style="padding:1rem">
+                </div>
+            
+            </div>
+        </div>
+        
+        
+        <div class="col-12">
+            <div class="grid">
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>Sexo: *</h5>
+                    <p-dropdown placeholder="Seleccionar" formControlName="sexo" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="sexos" [showClear]="true"></p-dropdown>
+                </div>
+            
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>Acciones Afirmativas:</h5>
+                    <p-dropdown (onChange)="discapacidad($event)" placeholder="Seleccionar" formControlName="accionesAfirmativas" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="accionesAfirmativas" [showClear]="true"></p-dropdown>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Auxiliar -->
+
+        <div *ngIf="personaDiscapacidad_B" class="col-12">
+        
+            <h5>¿Requiere una persona auxiliar?:</h5>
+         
+            <p-radioButton (onClick)="requiereAuxiliar($event)" name="auxiliar" value="1" formControlName="auxiliar" label="Si" class="mr-5"></p-radioButton>
+            <p-radioButton (onClick)="requiereAuxiliar($event)" name="auxiliar" value="2" formControlName="auxiliar" label="No"></p-radioButton>
+        
+        </div>
+
+        <div *ngIf="auxiliarRequerido_B" class="col-12">
+            <div class="grid">
+                <div class="col-12">
+                    <h5>Nombre Completo: *</h5>
+                    <input id="auxiliar_nombres" type="text" [pKeyFilter]="regexString_KF" formControlName="auxiliar_nombres" placeholder="Nombre Completo" pInputText class="w-full" style="padding:1rem">
+                </div>
+
+                <div class="col-12">
+                    <h5>Credencial de elector de la Persona Auxiliar: *</h5>
+                    <!-- <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" [auto]="true" chooseLabel="Browse"></p-fileUpload> -->
+                    <p-fileUpload name="myfile[]" [auto]="true" (onSelect)="subirArchivo('credencialAux', $event)" [fileLimit]="1" [maxFileSize]="6000000" accept=".pdf"></p-fileUpload>
+                </div>
+            </div>
+            
+        </div>
+
+    
+    
+        <div class="col-12">
+            <h5>Ocupación: *</h5>
+            <input id="ocupacion" type="text" [pKeyFilter]="regexString_KF" formControlName="ocupacion" placeholder="Ocupación" pInputText class="w-full" style="padding:1rem">
+        </div>
+    
+    
+        <div class="col-12">
+            <div class="grid">
+                
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>Fecha de Nacimiento: *</h5>
+                    <p-calendar inputId="basic" formControlName="fechaNacimiento" (onSelect)="calculaEdad( $event )"></p-calendar>
+                </div>
+    
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>Edad: </h5>
+                    <p-inputNumber inputId="integeronly" formControlName="edad" [min]="0" [max]="200" class="w-full" placeholder="Edad" [disabled]="true"></p-inputNumber>
+                </div>
+    
+            </div>
+        </div>
+    
+    
+        <div class="col-12">
+            <h5>Lugar de nacimiento: *</h5>
+            <p-dropdown (onChange)="afuerasCdmx($event)" placeholder="Seleccionar" formControlName="lugarNacimiento" optionValue="value" autoWidth="false" [style]="{'width':'100%'}" [options]="estadosRepublica" [showClear]="true"></p-dropdown>
+        </div>
+
+
+        <div *ngIf="afueraCdmx_B && paisOrigen_B" class="col-12">
+            <h5>País de Origen: *</h5>
+            <input id="paisOrigen" type="text" [pKeyFilter]="regexString_KF" formControlName="paisOrigen" placeholder="País de Origen" pInputText class="w-full" style="padding:1rem">
+        </div>
+
+        <div *ngIf="afueraCdmx_B" class="col-12">
+            <h5>¿Es hijo, hijo de padre y/o madre originarios de la Ciudad de México? *</h5>
+            <p-radioButton (onClick)="hijoPM($event)" name="hijo" value="1" formControlName="hijo" label="No" class="mr-5"></p-radioButton>
+            <p-radioButton (onClick)="hijoPM($event)" name="hijo" value="2" formControlName="hijo" label="Padre Originario" class="mr-5"></p-radioButton>
+            <p-radioButton (onClick)="hijoPM($event)" name="hijo" value="3" formControlName="hijo" label="Madre Originaria" class="mr-5"></p-radioButton>
+            <p-radioButton (onClick)="hijoPM($event)" name="hijo" value="4" formControlName="hijo" label="Ambos Originarios"></p-radioButton>
+        </div>
+
+        <div *ngIf="afueraCdmx_B && hijo_B" class="col-12">
+            <h5>Acta de nacimiento de madre o padre originario, donde se observa que el lugar de nacimiento es Ciudad de México *</h5>
+            <p-fileUpload name="actaPM[]" [auto]="true" (onSelect)="subirArchivo('actaPM', $event)" [fileLimit]="1" [maxFileSize]="6000000" accept=".pdf"></p-fileUpload>
+        </div>
+
+
+    
+        <div class="col-12">
+            <div class="grid">
+    
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>Clave de Elector</h5>
+                    <p-inputMask mask="aaaaaa99999999a999" formControlName="clave_elector" placeholder="GMVLMR80070501M100" slotChar=""></p-inputMask>
+                </div>
+    
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>OCR: *</h5>
+                    <p-inputMask mask="9999999999999" formControlName="ocr" placeholder="0122081809202" slotChar=""></p-inputMask>
+                </div>
+    
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <div class="grid">
+    
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>CURP</h5>
+                    <p-inputMask mask="aaaa*99999aaaaa**9" formControlName="curp" placeholder="SABC560626MDFLRN09" slotChar=""></p-inputMask>
+                </div>
+    
+                <div class="col-12 md:col-6 lg:col-6">
+                    <h5>RFC</h5>
+                    <p-inputMask mask="aaaa999999***" formControlName="rfc" placeholder="JUMM420313PA9" slotChar=""></p-inputMask>
+                </div>
+    
+            </div>
+        </div>
+
+        <div class="col-12">
+            <hr>
+        </div>
+
+    
+        <div class="col-12">
+            <div class="grid">
+
+                <div class="col-12 -mb-3">
+                    <h5>Carga de Documentos:</h5>
+                </div>
+
+                <div class="col-12">
+                    <span>
+                        En el siguiente apartado deberás adjuntar la documentación que se solicita. 
+                        Recuerda que los documentos son obligatorios para guardar el formulario
+                    </span>
+                </div>
+
+                <div class="col-12">
+                    <span>NOTA: El nombre del archivo no debe tener espacios o caracteres especiales</span>
+                </div>
+
+
+                <div class="col-12">
+                    <h5>Fotografía:</h5>
+                    <p-fileUpload name="foto[]" [auto]="true" (onSelect)="subirArchivo('foto', $event)" [fileLimit]="1" [maxFileSize]="2000000" accept=".png,.jpg"></p-fileUpload>
+                </div>
+
+                <div class="col-12">
+                    <h5>Credencial de elector: *</h5>
+                    <p-fileUpload name="credencial[]" [auto]="true" (onSelect)="subirArchivo('credencial', $event)" [fileLimit]="1" [maxFileSize]="6000000" accept=".pdf"></p-fileUpload>
+                </div>
+
+                <div class="col-12">
+                    <h5>Acta de nacimiento: *</h5>
+                    <p-fileUpload name="actaNacimiento[]" [auto]="true" (onSelect)="subirArchivo('actaNacimiento', $event)" [fileLimit]="1" [maxFileSize]="6000000" accept=".pdf"></p-fileUpload>
+                </div>
+
+                <div class="col-12">
+                    <h5>Formato de registro impreso: *</h5>
+                    <p-fileUpload name="formatoRegistro[]" [auto]="true" (onSelect)="subirArchivo('formatoRegistro', $event)" [fileLimit]="1" [maxFileSize]="6000000" accept=".pdf"></p-fileUpload>
+                </div>
+
+                <div class="col-12">
+                    <h5>Informe de capacidad económica: *</h5>
+                    <p-fileUpload name="informeCapacidadEc[]" [auto]="true" (onSelect)="subirArchivo('informeCapacidadEc', $event)" [fileLimit]="1" [maxFileSize]="6000000" accept=".pdf"></p-fileUpload>
+                </div>
+
+                <div class="col-12">
+                    <button [disabled]="!form.valid" pButton pRipple type="submit" label="Siguiente" class="w-full p-3 text-xl iecm-button-primary"></button>
+                </div>
+                
+
+
+            </div>
+            
+        </div>
+        
+        
+        
+    
+    
+    
+    
+    
+    
+    
+    </div>
+    
+
+</form>

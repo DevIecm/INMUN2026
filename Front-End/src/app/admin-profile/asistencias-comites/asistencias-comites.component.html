@@ -1,0 +1,54 @@
+<div class="card">
+    <!-- --------------------------------------------------------------------------- -->
+    <p-table [value]="asistencias" dataKey="name">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Desplegar asistencias</th>
+                <th>Comité seleccionado y usuario</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-expanded="expanded">
+            <tr>
+                <td>
+                    <!-- <button type="button" pButton pRipple [pRowToggler]="product" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button> -->
+                    <!-- <button type="button" pButton pRipple [pRowToggler]="product" class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button> -->
+                    <button type="button" pButton pRipple [pRowToggler]="product" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                </td>
+                <td>
+                    <small class="">{{product.nombre_comite}}</small>
+                    <br>
+                    <span class="font-bold ml-2">{{product.nombres + ' ' + product.primer_apellido + ' ' + product.segundo_apellido}}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-product>
+            <tr>
+                <td colspan="2">
+                    <div class="p-3">
+                        <p-table [value]="product.asistencias" dataKey="id_usuario" >
+                            <!-- [tableStyle]="{'min-width': '60rem'}" -->
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Fecha del comité</th>
+                                    <th>Usuario que escaneó QR</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-asistencia>
+                                <tr>
+                                    <td>{{asistencia.fecha}}</td>
+                                    <td>{{asistencia.nombre_usuario}}</td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="2">Sin información.</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- --------------------------------------------------------------------------- -->
+</div>
