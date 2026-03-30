@@ -1,0 +1,33 @@
+{
+  "name": "sirec-backend",
+  "version": "1.0.0",
+  "description": "Backend del SIREC 2023",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+  "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rea",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "exceljs": "^4.3.0",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "express-validator": "^6.14.3",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.1",
+    "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.13.0",
+    "qrcode": "^1.5.1",
+    "sequelize": "^6.28.0",
+    "sequelize-msnodesqlv8": "^0.2.6-beta.8",
+    "tedious": "^15.1.2",
+    "uuid": "^9.0.0"
+  }
+}
