@@ -47,7 +47,7 @@ export class RegistrarComiteComponent implements OnInit {
     cargarInfoComite(id_comite: number) {
         this.comiteService.obtenerInfoComite(id_comite)
             .subscribe((res: any) => {
-                console.log(res);
+                // console.log(res);
                 const { getComitesEditarDB, fecha } = res;
                 const { nombre_comite, cupo, estado } = getComitesEditarDB;
                 if (estado !== 0) {
@@ -78,7 +78,7 @@ export class RegistrarComiteComponent implements OnInit {
         let tipoService = null;
 
         if (this.id_comite) {
-            console.log('Existe id comité');
+            // console.log('Existe id comité');
 
             tipoService = this.comiteService.actualizarComite(this.formComite.value, this.id_comite);
         } else {

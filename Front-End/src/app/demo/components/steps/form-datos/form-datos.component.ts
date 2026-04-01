@@ -85,7 +85,7 @@ export class FormDatosComponent implements OnInit {
     cargaInfo() {
         this.blocked = true;
         this.usuario = this.usuarioService.usuario;
-        console.log(this.usuario);
+        // console.log(this.usuario);
         /* const { uuid,
           estado,
           perfil,
@@ -97,7 +97,7 @@ export class FormDatosComponent implements OnInit {
             // cual_discapacidad
         } = this.usuario;
 
-        console.log(this.usuario);
+        // console.log(this.usuario);
         /* let discapacidad = null;
         if(necesito_justificante){
           discapacidad = 1;
@@ -110,7 +110,7 @@ export class FormDatosComponent implements OnInit {
         setTimeout(() => {
             this.blocked = false;
         }, 500);
-        console.log(this.formDatos)
+        // console.log(this.formDatos)
         
         this.formDatos.setValue({ 
             nombres, 
@@ -139,7 +139,7 @@ export class FormDatosComponent implements OnInit {
     }
 
     submit() {
-        console.log(this.formDatos.value);
+        // console.log(this.formDatos.value);
 
         if (!this.formDatos.valid) {
             return;
@@ -181,7 +181,7 @@ export class FormDatosComponent implements OnInit {
         this.alcaldiasService.obtenerAlcaldias()
             .subscribe((alcaldias: any) => {
 
-                console.log(alcaldias);
+                // console.log(alcaldias);
 
                 // this.demarcacion_territorial = alcaldias;
                 // this.selAlcaldias.push();
@@ -197,7 +197,7 @@ export class FormDatosComponent implements OnInit {
         this.estadosRepublicaService.obtenerEstadoRepublica()
             .subscribe((edos: any) => {
 
-                console.log(edos);
+                // console.log(edos);
 
                 // this.demarcacion_territorial = alcaldias;
                 // this.selAlcaldias.push();
@@ -211,7 +211,7 @@ export class FormDatosComponent implements OnInit {
 
     seleccionaEntidad(id_alcaldia: number) {
 
-        console.log(id_alcaldia);
+        // console.log(id_alcaldia);
         if (id_alcaldia != 1) {
             this.formDatos.controls['entidad_federativa'].setValue('');
             this.formDatos.controls['entidad_federativa'].removeValidators([Validators.required]);
@@ -225,7 +225,7 @@ export class FormDatosComponent implements OnInit {
     }
 
     inputsJustificante(valor: any) {
-        console.log({ valor });
+        // console.log({ valor });
         /* persona_dirigido
         cargo_persona
         institucion_persona */

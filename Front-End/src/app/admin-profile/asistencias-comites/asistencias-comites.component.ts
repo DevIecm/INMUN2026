@@ -25,7 +25,7 @@ export class AsistenciasComitesComponent implements OnInit {
 
     this.comiteService.obtenerListadoValidacion()
       .subscribe( (data: Listado) => {
-        console.log(data);
+        // console.log(data);
         this.asistencias = data.usuariosConAsistenciaDB;
         
       })

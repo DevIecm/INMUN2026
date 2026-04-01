@@ -22,11 +22,8 @@ export class CargaDocumentosComponent implements OnInit {
   }
 
   subirArchivo( nombre: string, event: any ) {
-
     this.formatoValNot = event.currentFiles[0];
     this.form.patchValue({ formatoValNot: this.formatoValNot });
-    console.log( this.form.controls['formatoValNot'].value );
-    
+    // console.log( this.form.controls['formatoValNot'].value );
   }
-
 }

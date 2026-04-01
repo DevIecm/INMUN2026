@@ -40,17 +40,17 @@ export class ComitesComponent implements OnInit {
   obtenerComites(){
     this.comiteService.obtenerTodosComites()
       .subscribe( (data: any) => {
-        console.log(data);
+        // console.log(data);
         this.comites = data.getComitesDB;
         
       })
   }
 
   publicarComite( id_comite: number ){
-    console.log(id_comite);
+    // console.log(id_comite);
     this.comiteService.publicarComite( id_comite )
       .subscribe( (resp: any) => {
-        console.log(resp);
+        // console.log(resp);
         
         Swal.fire({
           title: resp.msg,
@@ -74,7 +74,7 @@ export class ComitesComponent implements OnInit {
         if (result.isConfirmed) {
           this.comiteService.eliminarComite( id_comite )
           .subscribe( (resp: any) => {
-            console.log(resp);
+            // console.log(resp);
 
             this.obtenerComites();
             

@@ -46,7 +46,6 @@ export class ValidacionComponent implements OnInit {
     }
 
     validarCuentaUsuario(id_usuario: number) {
-        console.log(id_usuario);
         const usuario = this.usuarios.find(u => u.id_usuario === id_usuario);
         if (usuario) {
             usuario.loading = true;
@@ -73,7 +72,7 @@ export class ValidacionComponent implements OnInit {
                 if (result.isConfirmed) {
                     this.usuarioService.validarUsuario(id_usuario)
                         .subscribe((resp: any) => {
-                            console.log(resp);
+                            // console.log(resp);
 
                             Swal.fire({
                                 title: resp.msg,

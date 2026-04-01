@@ -41,11 +41,9 @@ export class FormularioComponent implements OnInit {
     anios: [ , [ Validators.required ] ],
     meses: [ , [ Validators.required, Validators.pattern(this.vs.regexMeses) ] ],
     fileDoc: [ , [ Validators.required ] ]
-
   });
 
-  constructor( private fb: FormBuilder, 
-               private vs: ValidatorService ) { }
+  constructor ( private fb: FormBuilder, private vs: ValidatorService ) { }
 
   ngOnInit(): void {
     this.ciudades = [
@@ -57,15 +55,7 @@ export class FormularioComponent implements OnInit {
       { label: 'Desarrollo Urbano Quetzalcoatl', value: '1' },
       { label: 'La Era', value: '2' },
     ];
-
-    // this.form.valueChanges.subscribe(() => {
-    //   console.log(this.form.controls);
-    // });
-
-
-
   }
-
 
   campoFormulario( campo: string ): AbstractControl<any, any> | null {
     return this.form.get(campo);
@@ -109,23 +99,12 @@ export class FormularioComponent implements OnInit {
       this.campoFormulario('ciudad_afuera')?.addValidators([Validators.required, Validators.nullValidator]);
       this.campoFormulario('entidad_fed_afuera')?.addValidators([Validators.required, Validators.nullValidator]);
 
-
-      // updateValueAndValidity();
-      // console.log(this.form.invalid);
-
     }
   }
 
-
-
   subirArchivo( nombre: string, event: any ) {
-
     this.documento = event.currentFiles[0];
     this.form.patchValue({ fileDoc: this.documento });
-    console.log( this.form.controls['fileDoc'].value );
-
+    // console.log( this.form.controls['fileDoc'].value );
   }
-
-
-
 }

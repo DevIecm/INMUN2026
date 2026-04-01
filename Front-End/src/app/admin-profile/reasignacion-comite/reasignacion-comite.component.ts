@@ -37,7 +37,7 @@ export class ReasignacionComiteComponent implements OnInit {
   obtenerListadoReasignacion(){
     this.comiteService.obtenerListadoReasignacionComite()
       .subscribe( (data: any) => {
-        console.log(data);
+        // console.log(data);
         this.reasignaciones = data.listadoReasignacion;
         
       })
@@ -46,7 +46,7 @@ export class ReasignacionComiteComponent implements OnInit {
   obtenerComites(){
     this.comiteService.obtenerComitesActivos()
       .subscribe( (data: any) => {
-        console.log(data);
+        // console.log(data);
         this.selComites = data.getComitesActivosDB;        
       })
   }
@@ -68,7 +68,7 @@ export class ReasignacionComiteComponent implements OnInit {
             .subscribe( (res: any) => {
               this.updating( true, 'Reasignando comité...' );
       
-              console.log(res);       
+              // console.log(res);
               
               Swal.fire({
                 position: 'top-end',
@@ -144,7 +144,7 @@ export class ReasignacionComiteComponent implements OnInit {
           .subscribe((res: any) => {
             this.updating(true, 'Eliminando cuenta...');
 
-            console.log(res);
+            // console.log(res);
 
             Swal.fire({
               position: 'top-end',

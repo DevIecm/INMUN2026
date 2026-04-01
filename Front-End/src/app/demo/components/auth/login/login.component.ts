@@ -96,8 +96,6 @@ export class LoginComponent implements OnInit {
                 console.log(err);
                 Swal.fire('Error', err.error.msg, 'error');
             })
-        // console.log(this.formLogin.value);
-
     }
 
 
@@ -121,7 +119,6 @@ export class LoginComponent implements OnInit {
                     // this.messageService.add({ severity: 'error', summary: 'Ups', detail: err.error.msg, life: 3000 });
                     Swal.fire('Ups', err.error.msg, 'info');
                 } else {
-                    console.log('NEl!!!!');
                     Swal.fire('Ups', 'Ocurrió un error CODE[]', 'error');
                 }
                 this.router.navigate(['auth/login']);

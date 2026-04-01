@@ -149,7 +149,7 @@ export class SistemaComponent implements OnInit {
         // this.loadingGenerarConstancias = true;
         this.systemService.generarConstancias()
           .subscribe((resp: any) => {
-            console.log(resp);
+            // console.log(resp);
 
             const { aGenerar, generados } = resp;
 
@@ -187,7 +187,6 @@ export class SistemaComponent implements OnInit {
 
     this.loadingEnviarConstancias = true;
 
-    /********************/
     Swal.fire({
       title: '¿Estás seguro de enviar las constancias?',
       icon: 'question',
@@ -203,7 +202,7 @@ export class SistemaComponent implements OnInit {
 
         this.systemService.enviarConstancias()
           .subscribe((resp: any) => {
-            console.log(resp);
+            // console.log(resp);
 
             const { aEnviar, enviados } = resp;
 

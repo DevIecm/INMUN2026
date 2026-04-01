@@ -50,7 +50,7 @@ export class FormRecuperarContrasenaComponent implements OnInit {
 
     this.usuarioService.actualizarContrasena( this.formCambiarContrasena.value )
       .subscribe( (res: any) => {
-        console.log(res);
+          // console.log(res);
 
         Swal.fire({title: 'Excelente', text: 'La contraseña se actualizó correctamente', icon:'success', allowOutsideClick: false,
         allowEscapeKey: false}).then( (result) => {
@@ -85,11 +85,10 @@ export class FormRecuperarContrasenaComponent implements OnInit {
   }
 
   obtenerInformacionUsuario( token_mail: string ){
-    console.log('Aqui!!');
     this.usuarioService.validarInfoRecuperarcontrasena( token_mail )
       .subscribe( (res: any) => {
         const { usuarioDB } = res;
-        console.log(usuarioDB);
+        // console.log(usuarioDB);
         // const {  }
         this.formCambiarContrasena.controls['id_usuario'].patchValue(usuarioDB.id_usuario);
         this.formCambiarContrasena.controls['correo_electronico'].patchValue(usuarioDB.correo_electronico);

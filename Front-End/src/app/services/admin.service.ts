@@ -66,8 +66,6 @@ export class AdminService {
             .pipe(
                 map((resp: any) => {
 
-                    console.log(resp);
-
                     const { id_admin, nombre_usuario, usuario, estado, perfil } = resp.adminDB;
                     // const token = resp.token;
 

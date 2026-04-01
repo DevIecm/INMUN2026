@@ -25,7 +25,7 @@ export class StepsComponent implements OnInit {
     const { telefono_casa, telefono_celular, id_comite, estado } = this.usuarioService.usuario;
     this.estado = estado;
 
-    console.log({telefono_casa, telefono_celular, id_comite, estado});
+    // console.log({telefono_casa, telefono_celular, id_comite, estado});
     
 
     if(telefono_casa && telefono_celular){

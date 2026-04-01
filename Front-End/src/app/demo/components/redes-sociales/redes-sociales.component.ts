@@ -23,8 +23,7 @@ export class RedesSocialesComponent implements OnInit {
   }
 
   submit () {
-    console.log('Submit!');
-    
+    // console.log('Submit!');
   }
 
 }

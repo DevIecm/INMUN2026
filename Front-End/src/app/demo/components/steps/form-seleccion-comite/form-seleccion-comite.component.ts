@@ -50,9 +50,6 @@ export class FormSeleccionComiteComponent implements OnInit {
 
         const { id_comite } = this.usuario;
 
-        console.log({ id_comite });
-
-
         if (id_comite) {
             this.disabled = true;
         }
@@ -67,7 +64,7 @@ export class FormSeleccionComiteComponent implements OnInit {
     cargarComites() {
         this.usuarioService.obtenerComitesActivos()
             .subscribe((resp: any) => {
-                console.log(resp);
+                // console.log(resp);
 
                 const { id_comite } = this.usuario;
 
@@ -81,7 +78,7 @@ export class FormSeleccionComiteComponent implements OnInit {
                     let comitesCount = comitesDB.length;
 
                     comitesDB.forEach((comite: any) => {
-                        console.log(comite);
+                        // console.log(comite);
                         if (comite.lugares_disponibles <= 0) {
                             comite.disabled = true;
                             sinLugares++;
@@ -106,12 +103,7 @@ export class FormSeleccionComiteComponent implements OnInit {
                         });
                     }
                 }
-
-
-
-                console.log(this.comite);
-
-
+                // console.log(this.comite);
             })
     }
 
@@ -123,7 +115,7 @@ export class FormSeleccionComiteComponent implements OnInit {
         const data = this.formSelectComite.value;
         this.usuarioService.guardarInscripcionComite(data)
             .subscribe((resp: any) => {
-                console.log(resp);
+                // console.log(resp);
                 //  (resp.disponible) ? tipoIcon = 'success' : tipoIcon = 'error';
                 Swal.fire({ text: resp.msg, icon: 'success', allowEscapeKey: false, allowOutsideClick: false });
                 this.cierraModal.emit(true);
@@ -149,7 +141,7 @@ export class FormSeleccionComiteComponent implements OnInit {
     }
 
     buscarCupoo(id_comite: number) {
-        console.log(id_comite);
+        // console.log(id_comite);
 
         if (isNaN(id_comite)) {
             return;
@@ -157,7 +149,7 @@ export class FormSeleccionComiteComponent implements OnInit {
 
         this.usuarioService.validaCupoInscripcionComite(id_comite)
             .subscribe((resp: any) => {
-                console.log(resp);
+                // console.log(resp);
                 const { data } = resp;
                 const { cupo, lugares_disponibles, percentDisponible } = data;
 

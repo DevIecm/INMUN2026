@@ -23,13 +23,12 @@ export class ReportesComponent implements OnInit {
     }
 
     descargar_reporte(nombre_reporte: string) {
-        console.log(nombre_reporte);
+        // console.log(nombre_reporte);
 
         switch (nombre_reporte) {
             case 'registro_usuario':
                 this.reportesService.rptRegistroUsuarios()
                     .subscribe((res: any) => {
-                        console.log('Reporte descargado');
                         window.open(`${protocol}${res.reporte}`, '_parent', 'download');
 
                     })

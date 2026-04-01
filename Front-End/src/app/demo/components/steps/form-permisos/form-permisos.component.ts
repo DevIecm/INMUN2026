@@ -177,7 +177,7 @@ export class FormPermisosComponent implements OnInit {
                             }
                         })
                 }
-                console.log(res);
+                // console.log(res);
             }, (err: any) => {
                 console.log(err);
                 this.loading = false;
@@ -213,7 +213,7 @@ export class FormPermisosComponent implements OnInit {
     }
 
     verificaEsMenor(valor: boolean) {
-        console.log(valor);
+        // console.log(valor);
 
         this.active_input = !this.active_input;
 
@@ -265,7 +265,7 @@ export class FormPermisosComponent implements OnInit {
 
         this.permisosService.obtenerPermisoCapturado()
             .subscribe((resp: any) => {
-                console.log(resp);
+                // console.log(resp);
                 if (resp) {
                     this.cierra_registro = true;
 

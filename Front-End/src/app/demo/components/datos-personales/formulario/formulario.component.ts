@@ -29,9 +29,6 @@ export class FormularioComponent implements OnInit {
   fileInformeCapacidadEc!: File;
 
   regexString_KF: RegExp = this.vs.regexString_KF;
-  
-
-
 
   form: FormGroup = this.fb.group({
     nombres: [ '', [ Validators.required, Validators.pattern(this.vs.regexString), Validators.maxLength(150) ] ],
@@ -59,8 +56,6 @@ export class FormularioComponent implements OnInit {
     fileActaNacimiento: [ , [ Validators.required ] ],
     fileFormatoRegistro: [ , [ Validators.required ] ],
     fileInformeCapacidadEc: [ , [ Validators.required ] ]
-    
-
   });
 
   constructor( private fb: FormBuilder,
@@ -116,20 +111,11 @@ export class FormularioComponent implements OnInit {
       {label: 'Zacatecas', value: '32'},
       {label: 'Fuera de la República Mexicana', value: '33'}
     ];
-
-    // this.form.valueChanges.subscribe(() => {
-    //   console.log(this.form.controls);
-    // });
-
-
   }
-
 
   campoFormulario( campo: string ): AbstractControl<any, any> | null {
     return this.form.get(campo);
   }
-
-
 
   calculaEdad ( event: any ) {
     const nacimiento: Date = event;
@@ -139,11 +125,7 @@ export class FormularioComponent implements OnInit {
     this.edad = edad;
 
     this.campoFormulario('edad')?.patchValue( edad );
-
-
   }
-
-
 
   requiereAuxiliar ( event: any ) {
     const respuesta: number = event.value;
@@ -159,9 +141,7 @@ export class FormularioComponent implements OnInit {
       this.campoFormulario('fileCredencialAux')?.clearValidators();
       this.campoFormulario('fileCredencialAux')?.reset( null );
     }
-
   }
-
 
   discapacidad ( event: any ) {
     const respuesta: number = event.value;
@@ -179,8 +159,6 @@ export class FormularioComponent implements OnInit {
 
   }
 
-
-
   subirArchivo(nombre: string, event: any) {
 
     const regexPDF = new RegExp(this.vs.regexPDF);
@@ -193,65 +171,49 @@ export class FormularioComponent implements OnInit {
         case 'credencialAux':
           this.fileCredencialAux = event.currentFiles[0];
           this.form.patchValue({ fileCredencialAux: this.fileCredencialAux });
-          console.log(this.campoFormulario('fileCredencialAux')?.value);
+          // console.log(this.campoFormulario('fileCredencialAux')?.value);
           break;
 
         case 'actaPM':
           this.fileActaPM = event.currentFiles[0];
           this.form.patchValue({ fileActaPM: this.fileActaPM });
-          console.log(this.campoFormulario('fileActaPM')?.value);
+          // console.log(this.campoFormulario('fileActaPM')?.value);
           break;
 
         case 'credencial':
           this.fileCredencial = event.currentFiles[0];
           this.form.patchValue({ fileCredencial: this.fileCredencial });
-          console.log(this.campoFormulario('fileCredencial')?.value);
+          // console.log(this.campoFormulario('fileCredencial')?.value);
           break;
 
         case 'actaNacimiento':
           this.fileActaNacimiento = event.currentFiles[0];
           this.form.patchValue({ fileActaNacimiento: this.fileActaNacimiento });
-          console.log(this.campoFormulario('fileActaNacimiento')?.value);
+          // console.log(this.campoFormulario('fileActaNacimiento')?.value);
           break;
 
         case 'formatoRegistro':
           this.fileFormatoRegistro = event.currentFiles[0];
           this.form.patchValue({ fileFormatoRegistro: this.fileFormatoRegistro });
-          console.log(this.campoFormulario('fileFormatoRegistro')?.value);
+          // console.log(this.campoFormulario('fileFormatoRegistro')?.value);
           break;
 
         case 'informeCapacidadEc':
           this.fileInformeCapacidadEc = event.currentFiles[0];
           this.form.patchValue({ fileInformeCapacidadEc: this.fileInformeCapacidadEc });
-          console.log(this.campoFormulario('fileInformeCapacidadEc')?.value);
+          // console.log(this.campoFormulario('fileInformeCapacidadEc')?.value);
           break;
-
-
       }
 
-
     } else {
-      
       if ( regexIMG.test( event.currentFiles[0].name )) {
         this.fileFoto = event.currentFiles[0]; 
         this.form.patchValue({ fileFoto: this.fileFoto }); 
-        console.log(this.campoFormulario('fileFoto')?.value);
+        // console.log(this.campoFormulario('fileFoto')?.value);
       }
-
     }
-
-
-
-
-
   }
     
-    
-
-
-
-
-
   afuerasCdmx ( event: any ) {
 
     const afueraCdmxVal = event.value;
@@ -275,13 +237,9 @@ export class FormularioComponent implements OnInit {
     } else {
       this.afueraCdmx_B = false;
       this.campoFormulario('hijo')?.clearValidators();
-      this.campoFormulario('hijo')?.reset( null );
-      
+      this.campoFormulario('hijo')?.reset( null ); 
     }
-    
-
   }
-
   
   hijoPM ( event: any ) {
     if( event.value != '1' ) {
@@ -295,29 +253,8 @@ export class FormularioComponent implements OnInit {
     
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   submit () {
     // this.fileCredencialAux
 
   }
-
-
-
-
-
-
 }

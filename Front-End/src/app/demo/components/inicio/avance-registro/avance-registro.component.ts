@@ -31,7 +31,7 @@ export class AvanceRegistroComponent implements OnInit {
     this.usuarioService.obteneravanceRegistro()
       .subscribe((res: any) => {
 
-        console.log(res);
+        // console.log(res);
         const { estado, id_usuario } = res.avanceRegistroDB;
         // estado = 2 > Complementa información
         // estado = 3 > Selecciona comité

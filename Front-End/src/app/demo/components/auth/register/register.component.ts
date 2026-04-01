@@ -143,7 +143,7 @@ export class RegisterComponent implements OnInit {
                         this.router.navigateByUrl('/auth/login');
                     }
                 });
-                console.log(resp);
+                // console.log(resp);
 
             }, (err: any) => {
                 console.log(err);
@@ -166,8 +166,6 @@ export class RegisterComponent implements OnInit {
 
             })
 
-
-        // console.log(this.formRegister.value);
     }
 
     onScriptLoad() {
@@ -179,7 +177,7 @@ export class RegisterComponent implements OnInit {
     }
 
     changeeed(event: any) {
-        console.log(event);
+        // console.log(event);
     }
 
     campoNoValido(campo: string): boolean {
@@ -203,5 +201,4 @@ export class RegisterComponent implements OnInit {
                 console.log(err);
             })
     }
-
 }
