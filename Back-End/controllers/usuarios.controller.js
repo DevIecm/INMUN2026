@@ -94,6 +94,39 @@ const crearUsuario = async (req, res = response) => {
 
 }
 
+const eliminarUsuario = async (req, res = response) => {
+
+    const { id_usuario } = req.params;
+
+    try {
+
+        const eliminarUsuarioDB = await Usuario.destroy({ where: { id_usuario }, force: true });
+
+        if (!eliminarUsuarioDB) {
+            return res.status(500).send({
+                ok: false,
+                msg: 'Ocurrió un error al eliminar la información - CODE[U2]'
+            });
+        }
+
+        res.send({
+            ok: true,
+            msg: '¡La cuenta se eliminó correctamente!'
+        });
+
+    } catch (error) {
+
+        console.log(error);
+
+        return res.status(403).send({
+            ok: false,
+            msg: 'Ocurrió un error al eliminar la información - CODE[U3]'
+        });
+
+    }
+
+}
+
 const complementarInformacion = async (req, res = response) => {
 
     // Validar que exista un archivo
@@ -139,17 +172,14 @@ const complementarInformacion = async (req, res = response) => {
         });
 
     }
-
-
-
     // console.log(data);
-
-
 }
 
 const permisosYAutorizaciones = async (req, res = response) => {
 
     const id_usuario = req.id_usuario;
+
+    console.log({id_usuario});
 
 
     const data = req.body;
@@ -331,8 +361,6 @@ const getUsuarioById = async (req, res = response) => {
 }
 
 const getPermisoId = async (req, res = response) => {
-
-        console.log("++++++++++++++++++++",req.id_usuario)
 
     const id_usuario = req.id_usuario;
 
@@ -637,6 +665,7 @@ const validarRegistroPorUsuario = async (req, res = response) => {
 
 module.exports = {
     crearUsuario,
+    eliminarUsuario,
     complementarInformacion,
     getUsuarioById,
     suscribirAComite,

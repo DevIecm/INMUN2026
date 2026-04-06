@@ -6,7 +6,7 @@ const { Router } = require("express");
 const { check, body  } = require("express-validator");
 const expressFileUpload = require('express-fileupload');
 
-const { crearUsuario, complementarInformacion, getUsuarioById, suscribirAComite, permisosYAutorizaciones, getPermisoId, avanceRegistro, eliminarCuentaUsuario, obtenerListaUsuariosValidacion, validarRegistroPorUsuario } = require("../controllers/usuarios.controller");
+const { crearUsuario, eliminarUsuario, complementarInformacion, getUsuarioById, suscribirAComite, permisosYAutorizaciones, getPermisoId, avanceRegistro, eliminarCuentaUsuario, obtenerListaUsuariosValidacion, validarRegistroPorUsuario } = require("../controllers/usuarios.controller");
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
 const { validarAdminJWT } = require("../middlewares/admin-validar-jwt");
@@ -30,6 +30,10 @@ router.post('/', [
     check('curp', 'La curp es obligatoria').not().isEmpty(),
     validarCampos
 ], crearUsuario);
+
+router.delete('/eliminar-usuario/:id_usuario', [
+    validarAdminJWT,
+], eliminarUsuario);
 
 router.put('/complementa-informacion', [
     validarJWT,
