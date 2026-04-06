@@ -12,21 +12,18 @@ export class StepsComponent implements OnInit {
   index: number = 0;
   tab2Dis: boolean = true;
   tab3Dis: boolean = true;
+  tab4Dis: boolean = true;
   estado: number = 0;
   
-  constructor( private usuarioService:UsuarioService ) { }
+  constructor( private usuarioService: UsuarioService ) { }
   
   ngOnInit(): void {
     this.cargaEstado()
   }
 
-
   cargaEstado(){
     const { telefono_casa, telefono_celular, id_comite, estado } = this.usuarioService.usuario;
     this.estado = estado;
-
-    // console.log({telefono_casa, telefono_celular, id_comite, estado});
-    
 
     if(telefono_casa && telefono_celular){
       this.tab2Dis = false;
@@ -35,6 +32,12 @@ export class StepsComponent implements OnInit {
     if(id_comite){
       this.tab3Dis = false;
       this.tab2Dis = false;
+    }
+
+    if(estado == 4){
+      this.tab2Dis = false;
+      this.tab3Dis = false;
+      this.tab4Dis = false;
     }
   }
   
@@ -47,7 +50,7 @@ export class StepsComponent implements OnInit {
     if(index == 2){
       this.tab3Dis = false
     }
-    // alert('Aqui!')
+    
   }
 
 }

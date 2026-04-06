@@ -8,6 +8,7 @@ import { FormDatosComponent } from './form-datos/form-datos.component';
 import { FormSeleccionComiteComponent } from './form-seleccion-comite/form-seleccion-comite.component';
 import { FormPermisosComponent } from './form-permisos/form-permisos.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormEvaluacionesComponent } from './form-evaluaciones/form-evaluaciones.component';
 
 
 @NgModule({
@@ -15,7 +16,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     StepsComponent,
     FormDatosComponent,
     FormSeleccionComiteComponent,
-    FormPermisosComponent
+    FormPermisosComponent,
+    FormEvaluacionesComponent,
+    FormEvaluacionesComponent
   ],
   imports: [
     CommonModule,

@@ -1,7 +1,4 @@
-<!-- <h1>Complementa información</h1> -->
-<!-- <router-outlet></router-outlet> -->
 <div class="card">
-    <!-- <h5>Custom Headers</h5> -->
     <p-tabView [(activeIndex)]="index" styleClass="tabview-custom">
         <p-tag styleClass="" class="flex justify-content-end flex-wrap" icon="pi pi-exclamation-triangle" severity="warning" value="Todos los campos son obligatorios"></p-tag>
         <p-tabPanel tooltip="Todos los campos son obligatorios" header="Datos">
@@ -45,7 +42,7 @@
 
         </p-tabPanel>
 
-        <p-tabPanel header="Permisos y autorizaciones" [disabled]="tab3Dis">
+        <p-tabPanel header="Evaluaciones y Encuesta" [disabled]="tab4Dis">
             <ng-template pTemplate = "header">
                 <div class="mr-2">
                     <i class="pi pi-users"></i>
@@ -56,7 +53,7 @@
                 <!-- <i class="pi pi-search"></i> -->
             </ng-template>
             
-            <app-form-permisos></app-form-permisos>
+            <app-form-evaluaciones></app-form-evaluaciones>
 
         </p-tabPanel>
     </p-tabView>

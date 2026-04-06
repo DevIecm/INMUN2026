@@ -276,6 +276,7 @@ export class FormPermisosComponent implements OnInit {
                     curp_tutor,
                     parentesco,
                     menor_edad } = resp.permisoDB;
+
                 if (menor_edad) {
 
                     this.habilita_o_no_input_text = true
@@ -283,12 +284,16 @@ export class FormPermisosComponent implements OnInit {
                     this.formPermisosMenor.setValue({
                         nombre_tutor,
                         curp_tutor,
-                        parentesco, menor_edad, conoce_acepta_terminos_convocatoria, ha_leido_aviso_privacidad
+                        parentesco, 
+                        menor_edad, 
+                        conoce_acepta_terminos_convocatoria, 
+                        ha_leido_aviso_privacidad
                     });
 
                 } else {
                     this.formPermisos.setValue({
-                        conoce_acepta_terminos_convocatoria, ha_leido_aviso_privacidad,
+                        conoce_acepta_terminos_convocatoria, 
+                        ha_leido_aviso_privacidad,
                         autoriza_uso_imagen
                     });
                     this.active_input = !this.active_input;
