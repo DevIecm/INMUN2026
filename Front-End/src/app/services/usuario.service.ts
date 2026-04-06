@@ -88,6 +88,10 @@ export class UsuarioService {
 
     }
 
+    eliminarCuentaUsuario(id_usuario: number) {
+        return this.http.delete(`${base_url}/usuarios/eliminar-usuario/${id_usuario}`, this.adminService.headers);  
+    }
+
     activarCuenta(correo_electronico: string, token_mail: string, uuid: string) {
         return this.http.put(`${base_url}/login/active/${correo_electronico}/${token_mail}/${uuid}`, this.headers);
     }

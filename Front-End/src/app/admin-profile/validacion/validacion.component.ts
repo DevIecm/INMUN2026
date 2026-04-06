@@ -45,6 +45,63 @@ export class ValidacionComponent implements OnInit {
 
     }
 
+    eliminarCuentaUsuario(id_usuario: number) {
+       console.log(id_usuario);
+
+       const usuario = this.usuarios.find(u => u.id_usuario === id_usuario);
+       console.log(usuario);
+
+        if (usuario) {
+            usuario.loading = true;
+        }
+        Swal.fire(
+            {
+                title: '¿Estás seguro que desea eliminar el registro?',
+                icon: 'question',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: true,
+                confirmButtonText: 'Eliminar',
+                showCancelButton: true,
+                cancelButtonText: 'Cerrar y cancelar acción',
+                reverseButtons: true
+            }
+        )
+            .then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                const usuario = this.usuarios.find(u => u.id_usuario === id_usuario);
+                if (usuario) {
+                    usuario.loading = true;
+                }
+                if (result.isConfirmed) {
+                    this.usuarioService.eliminarCuentaUsuario(id_usuario)
+                        .subscribe((resp: any) => {
+                            // console.log(resp);
+
+                            Swal.fire({
+                                title: resp.msg,
+                                icon: 'success',
+                                // timer: 2500,
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                                showConfirmButton: true,
+                                // allowOutsideClick: false,
+                            });
+
+                            this.obtenerListado();
+
+                        })
+                }
+                if (result.isDenied || result.isDismissed) {
+
+                    if (usuario) {
+                        usuario.loading = false;
+                    }
+                }
+
+            })
+    }
+
     validarCuentaUsuario(id_usuario: number) {
         const usuario = this.usuarios.find(u => u.id_usuario === id_usuario);
         if (usuario) {

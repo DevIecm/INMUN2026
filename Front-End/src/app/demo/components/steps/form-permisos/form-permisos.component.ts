@@ -177,7 +177,7 @@ export class FormPermisosComponent implements OnInit {
                             }
                         })
                 }
-                // console.log(res);
+                console.log(res);
             }, (err: any) => {
                 console.log(err);
                 this.loading = false;
@@ -213,7 +213,7 @@ export class FormPermisosComponent implements OnInit {
     }
 
     verificaEsMenor(valor: boolean) {
-        // console.log(valor);
+        console.log(valor);
 
         this.active_input = !this.active_input;
 
@@ -253,19 +253,17 @@ export class FormPermisosComponent implements OnInit {
 
         const { edad } = this.usuario;
         this.mayor_edad = false;
-
         if (Number(edad) >= 18) {
             // Habilita priemros 3 checks
             this.mayor_edad = true;
             this.habilita_o_no_input_text = false;
         } else {
             this.habilita_o_no_input_text = true;
-
         }
 
         this.permisosService.obtenerPermisoCapturado()
             .subscribe((resp: any) => {
-                // console.log(resp);
+                console.log(resp);
                 if (resp) {
                     this.cierra_registro = true;
 

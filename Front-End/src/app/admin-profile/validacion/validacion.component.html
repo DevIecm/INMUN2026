@@ -19,18 +19,19 @@
                 <!-- <th style="width: 4rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th> -->
-                <th pSortableColumn="nombres">Nombre(s)<p-sortIcon field="nombres"></p-sortIcon></th>
-                <th pSortableColumn="primer_apellido">Primer apellido<p-sortIcon field="primer_apellido"></p-sortIcon></th>
-                <th pSortableColumn="segundo_apellido">Segundo apellido <p-sortIcon field="segundo_apellido"></p-sortIcon></th>
-                <th pSortableColumn="estado" style="min-width:10rem">Estado validación <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                <th pSortableColumn="nombres" class="text-center">Nombre(s)<p-sortIcon field="nombres"></p-sortIcon></th>
+                <th pSortableColumn="primer_apellido" class="text-center">Primer apellido<p-sortIcon field="primer_apellido"></p-sortIcon></th>
+                <th pSortableColumn="segundo_apellido" class="text-center">Segundo apellido <p-sortIcon field="segundo_apellido"></p-sortIcon></th>
+                <th pSortableColumn="estado" class="text-center" style="min-width:10rem">Estado validación <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                <th pSortableColumn="eliminar" class="text-center">Eliminar registro</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-usuario>
             <tr [ngClass]="{'eliminado': usuario.estado === 0}">
-                <td>{{usuario.nombres}}</td>
-                <td>{{usuario.primer_apellido}}</td>
-                <td>{{usuario.segundo_apellido}}</td>
-                <td>
+                <td class="text-center">{{usuario.nombres}}</td>
+                <td class="text-center">{{usuario.primer_apellido}}</td>
+                <td class="text-center">{{usuario.segundo_apellido}}</td>
+                <td class="text-center">
                     <ng-container *ngIf="usuario.validado; else elseTemplate">
                         <!-- Validado -->
                         <p-tag styleClass="mr-2" icon="pi pi-check" severity="info" value="Validado"></p-tag>
@@ -40,6 +41,9 @@
                     </ng-template>
                     
                     <!-- boton -->
+                </td>
+                <td class="text-center">
+                    <button [loading]="usuario.loading" pButton pRipple type="button" label="Eliminar" class="p-button-raised p-button-danger" (click)="eliminarCuentaUsuario(usuario.id_usuario)"></button>
                 </td>
             </tr>
         </ng-template>
