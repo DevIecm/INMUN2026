@@ -46,8 +46,8 @@ const enviarConstanciaMail = async ( destinatarios = [] ) => {
             const opcionesCorreo = {
                 from: user, // sender address
                 to: `${destinatario.correo_electronico}`, // list of receivers
-                subject: "¡Constancia de asistencia al INMUN 2024!", // Subject line
-                text: "IECM - INMUN 2024", // plain text body
+                subject: "¡Constancia de asistencia al INMUN 2026!", // Subject line
+                text: "IECM - INMUN 2026", // plain text body
                 attachments: [
                     {
                         filename: `constancia-asistencia-${destinatario.nombre}.pdf`,

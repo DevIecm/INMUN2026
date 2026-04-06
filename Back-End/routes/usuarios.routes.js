@@ -6,7 +6,21 @@ const { Router } = require("express");
 const { check, body  } = require("express-validator");
 const expressFileUpload = require('express-fileupload');
 
-const { crearUsuario, eliminarUsuario, complementarInformacion, getUsuarioById, suscribirAComite, permisosYAutorizaciones, getPermisoId, avanceRegistro, eliminarCuentaUsuario, obtenerListaUsuariosValidacion, validarRegistroPorUsuario } = require("../controllers/usuarios.controller");
+const { 
+    crearUsuario, 
+    eliminarUsuario, 
+    complementarInformacion, 
+    getUsuarioById, 
+    suscribirAComite, 
+    permisosYAutorizaciones, 
+    getPermisoId, 
+    avanceRegistro, 
+    eliminarCuentaUsuario, 
+    obtenerListaUsuariosValidacion, 
+    validarRegistroPorUsuario,
+    enviarConstanciaUsuario
+ } = require("../controllers/usuarios.controller");
+
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
 const { validarAdminJWT } = require("../middlewares/admin-validar-jwt");
@@ -51,6 +65,10 @@ router.post('/permisos-autorizaciones', [
     check('autoriza_uso_imagen', 'La demarcación es obligatoria').not().isEmpty(),
     validarCampos
 ], permisosYAutorizaciones);
+
+router.post('/enviar-constancia', [
+    validarJWT,
+], enviarConstanciaUsuario);
 
 router.post('/permisos-autorizaciones-menor', [
     validarJWT,

@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 
 const Usuario = require("../models/usuarios.model");
 
-const { tokenMailRegister, MailRegister } = require("../helpers/correos/correo-registro");
+const { tokenMailRegister, MailRegister, ConstanciaMailRegister } = require("../helpers/correos/correo-registro");
 const { dbConnection } = require('../database/config');
 const PermisosAutorizaciones = require('../models/permisos-autorizaciones');
 const { generaQrYPdf } = require('./qr.controller');
@@ -173,6 +173,52 @@ const complementarInformacion = async (req, res = response) => {
 
     }
     // console.log(data);
+}
+
+const enviarConstanciaUsuario = async (req, res = response) => {
+
+    const id_usuario = req.id_usuario;
+
+    console.log("++++++++++++++++++++++", id_usuario);
+
+    try {
+
+        const infoUsuarioDB = await Usuario.findOne({ where: { id_usuario } });
+
+        console.log("+++++++++++++++++++++", {infoUsuarioDB});
+        if (!infoUsuarioDB) {
+            return res.status(401).send({
+                ok: false,
+                msg: 'No se encontró información del usuario'
+            });
+        }
+
+        const sendEmail = await ConstanciaMailRegister(id_usuario, infoUsuarioDB.correo_electronico, `${infoUsuarioDB.nombres} ${infoUsuarioDB.primer_apellido} ${infoUsuarioDB.segundo_apellido}`, infoUsuarioDB.usuario, infoUsuarioDB.uuid);
+
+        console.log({sendEmail});
+
+        if (sendEmail.ok) {
+            console.log('Correo enviado correctamente');
+            res.send({
+                ok: true,
+                msg: 'En tu correo electrónico, encontrarás tu constancia de participación en el INMUN 2025.'
+            });
+        } else {
+            console.log('Ocurrió un error al enviar el correo');
+            return res.status(501).send({
+                ok: false,
+                msg: sendEmail.msg
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+
 }
 
 const permisosYAutorizaciones = async (req, res = response) => {
@@ -497,7 +543,7 @@ const avanceRegistro = async (req, res = response) => {
                 msg: 'No se encontró información del usuario'
             });
         }
-        
+        console.log({avanceRegistroDB});
         res.send({
             ok: true,
             msg: 'Avance del registro',
@@ -674,5 +720,6 @@ module.exports = {
     avanceRegistro,
     eliminarCuentaUsuario,
     obtenerListaUsuariosValidacion,
-    validarRegistroPorUsuario
+    validarRegistroPorUsuario,
+    enviarConstanciaUsuario
 }

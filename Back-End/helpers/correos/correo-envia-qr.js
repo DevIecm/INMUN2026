@@ -52,8 +52,8 @@ const enviarQRMail = async ( id_usuario = 0, correo_electronico = '', nombre_com
         let info = await transporter.sendMail({
             from: user, // sender address
             to: `${correo_electronico}`, // list of receivers
-            subject: "¡Credencial y qr para acceso al INMUN 2024!", // Subject line
-            text: "IECM - INMUN 2024", // plain text body
+            subject: "¡Credencial y qr para acceso al INMUN 2026!", // Subject line
+            text: "IECM - INMUN 2026", // plain text body
             attachments: [
                 {
                     filename: `credencial-qr-${nombre_completo}.pdf`,
