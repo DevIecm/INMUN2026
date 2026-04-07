@@ -303,15 +303,15 @@ const reasignarComite = async (req, res = response) => {
     id_usuario= Number(id_usuario);
     console.log({id_comite, id_usuario});
 
-    const validarCupo = await Comites.findOne({where: {id_comite}, attributes: ['id_comite', 'lugares_disponibles']});
-    // console.log(validarCupo.lugares_disponibles);
+    // const validarCupo = await Comites.findOne({where: {id_comite}, attributes: ['id_comite', 'lugares_disponibles']});
+    // // console.log(validarCupo.lugares_disponibles);
 
-    if(validarCupo.lugares_disponibles <= 0){
-        return res.status(403).send({
-            ok: false,
-            msg: 'El comité seleccionado ya no cuenta con lugares disponibles'
-        });
-    }
+    // if(validarCupo.lugares_disponibles <= 0){
+    //     return res.status(403).send({
+    //         ok: false,
+    //         msg: 'El comité seleccionado ya no cuenta con lugares disponibles'
+    //     });
+    // }
 
     const updComiteSeleccionadoBD = await Usuario.update( { id_comite }, { where: { id_usuario } } );
     if(!updComiteSeleccionadoBD){
