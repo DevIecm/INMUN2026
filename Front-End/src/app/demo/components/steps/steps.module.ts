@@ -9,6 +9,7 @@ import { FormSeleccionComiteComponent } from './form-seleccion-comite/form-selec
 import { FormPermisosComponent } from './form-permisos/form-permisos.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormEvaluacionesComponent } from './form-evaluaciones/form-evaluaciones.component';
+import { AccordionModule } from "primeng/accordion";
 
 
 @NgModule({
@@ -17,14 +18,14 @@ import { FormEvaluacionesComponent } from './form-evaluaciones/form-evaluaciones
     FormDatosComponent,
     FormSeleccionComiteComponent,
     FormPermisosComponent,
-    FormEvaluacionesComponent,
-    FormEvaluacionesComponent
   ],
   imports: [
     CommonModule,
     StepsRoutingModule,
     PrimeNgModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AccordionModule,
+    FormEvaluacionesComponent
   ]
 })
 export class StepsModule { }
