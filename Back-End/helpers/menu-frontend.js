@@ -11,7 +11,11 @@ const getMenuFrontEnd = (perfil = 1, nombres = '') => {
                     icon: 'pi pi-fw pi-home',
                     routerLink: ['./inicio']
                 },
-                { label: 'Complementa tu información', icon: 'pi pi-fw pi-id-card', routerLink: ['./complementa-informacion'] }
+                { 
+                    label: 'Complementa tu información', 
+                    icon: 'pi pi-fw pi-id-card', 
+                    routerLink: ['./complementa-informacion'] 
+                }
             ]
         },
     ];

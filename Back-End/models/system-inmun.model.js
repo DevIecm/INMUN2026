@@ -17,8 +17,4 @@ const SystemInmun = dbConnection.define('sistema_inmun', {
     freezeTableName: true
 });
 
-
-
-
-
 module.exports = SystemInmun;

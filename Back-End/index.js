@@ -36,6 +36,9 @@ try {
  * COMIENZAN RUTAS
  */
 
+// Cuestionarios
+app.use('/api/cuestionarios', require('./routes/cuestionarios.routes'));
+
 // Prueba
 app.use('/api/test', require('./routes/test.routes'));
 
