@@ -33,15 +33,15 @@ const crearUsuario = async (req, res = response) => {
 
     try {
 
-        const countByCRUPDB = await Usuario.count( { where: { curp }} );
+        const countByCRUPDB = await Usuario.count({ where: { curp } });
 
-        if(countByCRUPDB > 0){
+        if (countByCRUPDB > 0) {
             return res.status(401).send({
                 ok: false,
                 msg: `La curp ${curp} ya se encuentra registrada en el INMUN, hable con el admininstrador`
             });
         }
-        
+
         /* const countByCorreoDB = await Usuario.count( { where: { correo_electronico }} );
 
         if(countByCorreoDB > 0){
@@ -179,13 +179,10 @@ const enviarConstanciaUsuario = async (req, res = response) => {
 
     const id_usuario = req.id_usuario;
 
-    console.log("++++++++++++++++++++++", id_usuario);
-
     try {
 
         const infoUsuarioDB = await Usuario.findOne({ where: { id_usuario } });
 
-        console.log("+++++++++++++++++++++", {infoUsuarioDB});
         if (!infoUsuarioDB) {
             return res.status(401).send({
                 ok: false,
@@ -195,7 +192,7 @@ const enviarConstanciaUsuario = async (req, res = response) => {
 
         const sendEmail = await ConstanciaMailRegister(id_usuario, infoUsuarioDB.correo_electronico, `${infoUsuarioDB.nombres} ${infoUsuarioDB.primer_apellido} ${infoUsuarioDB.segundo_apellido}`, infoUsuarioDB.usuario, infoUsuarioDB.uuid);
 
-        console.log({sendEmail});
+        console.log({ sendEmail });
 
         if (sendEmail.ok) {
             console.log('Correo enviado correctamente');
@@ -221,21 +218,65 @@ const enviarConstanciaUsuario = async (req, res = response) => {
 
 }
 
+const enviarQrUsuario = async (req, res = response) => {
+
+    const id_usuario = req.id_usuario;
+
+    try {
+
+        const infoUsuarioDB = await Usuario.findOne({ where: { id_usuario } });
+
+        if (!infoUsuarioDB) {
+            return res.status(401).send({
+                ok: false,
+                msg: 'No se encontró información del usuario'
+            });
+        }
+
+        let { curp, uuid, correo_electronico, nombres, primer_apellido, segundo_apellido, id_comite, edad } = infoUsuarioDB;
+
+        const nombre_completo = `${nombres.toUpperCase()} ${primer_apellido.toUpperCase()} ${segundo_apellido.toUpperCase()}`;
+        const QR = await generaQrYPdf(id_usuario, curp, uuid, correo_electronico, nombre_completo);
+        const { ok, msg = '' } = QR
+
+        if (!ok) {
+            console.log('Ocurrió un error al enviar el correo');
+            return res.status(501).send({
+                ok: false,
+                msg: 'Error en generación y envío de QR'
+            });
+        } else {
+            console.log('Correo enviado correctamente');
+            res.send({
+                ok: true,
+                msg: 'En tu correo electrónico, encontrarás tu constancia de participación en el INMUN 2025.'
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+}
+
 const permisosYAutorizaciones = async (req, res = response) => {
 
     const id_usuario = req.id_usuario;
 
-    console.log({id_usuario});
+    console.log({ id_usuario });
 
 
     const data = req.body;
-    
+
     data.id_usuario = id_usuario;
     console.log(data);
 
     try {
 
-        const verifyInfoUsuario = await Usuario.findOne({  where: {id_usuario, estado: 3} });
+        const verifyInfoUsuario = await Usuario.findOne({ where: { id_usuario, estado: 3 } });
 
         if (!verifyInfoUsuario) {
             return res.status(401).send({
@@ -247,7 +288,7 @@ const permisosYAutorizaciones = async (req, res = response) => {
         let { curp, uuid, correo_electronico, nombres, primer_apellido, segundo_apellido, id_comite, edad } = verifyInfoUsuario;
 
         data.menor_edad = 0;
-        if(edad < 18){
+        if (edad < 18) {
             data.menor_edad = 1;
         }
 
@@ -279,7 +320,7 @@ const permisosYAutorizaciones = async (req, res = response) => {
             if (lugares_disponibles <= 0) {
 
                 // Pasar a null id_comite y estado a 2
-                const upUsuarioComiteNull = Usuario.update( {id_comite: null, estado: 2}, { where: { id_usuario } } );
+                const upUsuarioComiteNull = Usuario.update({ id_comite: null, estado: 2 }, { where: { id_usuario } });
                 if (!upUsuarioComiteNull) {
                     return res.status(500).send({
                         ok: false,
@@ -307,7 +348,7 @@ const permisosYAutorizaciones = async (req, res = response) => {
         /**NUEVO AGREGADO EL DÍA MARTES 28 DE MARZO DEL 2023 */
 
         const nombre_completo = `${nombres.toUpperCase()} ${primer_apellido.toUpperCase()} ${segundo_apellido.toUpperCase()}`;
-        
+
         const insPermisosDB = await PermisosAutorizaciones.create(data);
 
         if (!insPermisosDB) {
@@ -317,7 +358,7 @@ const permisosYAutorizaciones = async (req, res = response) => {
             });
         }
 
-        
+
 
         const updPermisosUsuario = await Usuario.update({ estado: 4 }, { where: { id_usuario } });
 
@@ -331,27 +372,27 @@ const permisosYAutorizaciones = async (req, res = response) => {
         // Crear directorio
         const path_curp = `./uploads/qr/${curp}`;
 
-        if(!fse.existsSync(path_curp)){
+        if (!fse.existsSync(path_curp)) {
             fse.mkdirSync(path_curp);
         }
-        
+
         // Envío de correo con QR
 
-        const QR = await generaQrYPdf( id_usuario, curp, uuid, correo_electronico, nombre_completo );
-        console.log({QR});
+        // const QR = await generaQrYPdf( id_usuario, curp, uuid, correo_electronico, nombre_completo );
+        // console.log({QR});
 
-        const { ok, msg = '' } = QR;
+        // const { ok, msg = '' } = QR;
 
-        if(!ok){
-            console.log(QR);
-            return res.status(500).send({
-                ok: false,
-                msg: 'Error en generación y envío de QR'
-            });
-        }
+        // if(!ok){
+        //     console.log(QR);
+        //     return res.status(500).send({
+        //         ok: false,
+        //         msg: 'Error en generación y envío de QR'
+        //     });
+        // }
 
 
-        console.log(msg);
+        // console.log(msg);
         res.send({
             ok: true,
             msg: 'Los permisos y autorizaciones se guardaron correctamente. En tu correo electrónico, encontrarás tu Código QR que te servirá para pasar lista de asistencia los días del evento, por lo que lo deberás llevar impreso o en medio digital.'
@@ -449,7 +490,7 @@ const suscribirAComite = async (req, res = response) => {
     const fecha_selecciona_comite = dbConnection.literal('GETDATE()');
 
     try {
-        
+
         let { id_comite } = data;
 
         /**NUEVO AGREGADO EL DÍA MARTES 28 DE MARZO DEL 2023 */
@@ -477,7 +518,7 @@ const suscribirAComite = async (req, res = response) => {
             const { lugares_disponibles, cupo } = lugaresdisponiblesComiteDB;
             console.log(lugares_disponibles);
 
-            if(lugares_disponibles <= 0){
+            if (lugares_disponibles <= 0) {
 
                 return res.status(401).send({
                     ok: false,
@@ -485,7 +526,7 @@ const suscribirAComite = async (req, res = response) => {
                     lugares_disponibles,
                     con_lugar: false
                 });
-                
+
             }
 
         } catch (error) {
@@ -496,7 +537,7 @@ const suscribirAComite = async (req, res = response) => {
             });
         }
 
-    // console.log(exe_query_ListadoValidacion);
+        // console.log(exe_query_ListadoValidacion);
 
 
         /**NUEVO AGREGADO EL DÍA MARTES 28 DE MARZO DEL 2023 */
@@ -543,7 +584,7 @@ const avanceRegistro = async (req, res = response) => {
                 msg: 'No se encontró información del usuario'
             });
         }
-        console.log({avanceRegistroDB});
+        console.log({ avanceRegistroDB });
         res.send({
             ok: true,
             msg: 'Avance del registro',
@@ -570,7 +611,7 @@ const eliminarCuentaUsuario = async (req, res = response) => {
         // Obtener información del usuario para después insertarla
         const getDataUsrDB = await Usuario.findOne({ where: { id_usuario, id_comite, estado: 4 } });
 
-        if(!getDataUsrDB){
+        if (!getDataUsrDB) {
             return res.status(404).send({
                 ok: false,
                 msg: 'No se encontró información'
@@ -578,7 +619,7 @@ const eliminarCuentaUsuario = async (req, res = response) => {
         }
 
         // console.log(getDataUsrDB.dataValues);
-        const { 
+        const {
             // fecha_nacimiento,
             fecha_selecciona_comite,
             // fecha_alta,
@@ -586,12 +627,12 @@ const eliminarCuentaUsuario = async (req, res = response) => {
             fecha_activa_cuenta,
             fecha_actualiza_contrasena,
             fecha_token,
-            fecha_complementa_informacion, ...resto  } = getDataUsrDB.dataValues;
+            fecha_complementa_informacion, ...resto } = getDataUsrDB.dataValues;
 
         // Insertar información del usuario
-        const insertUsrHistorico = await UsuarioEliminado.create( resto );
+        const insertUsrHistorico = await UsuarioEliminado.create(resto);
 
-        if(!insertUsrHistorico){
+        if (!insertUsrHistorico) {
             return res.status(501).send({
                 ok: false,
                 msg: 'No se pudo guardar la información histórica'
@@ -599,15 +640,15 @@ const eliminarCuentaUsuario = async (req, res = response) => {
         }
 
         // Eliminar la información del usuario
-        const eliminarUsrDB = await Usuario.destroy( { where: { id_usuario, id_comite, estado: 4 }, force: true } );
+        const eliminarUsrDB = await Usuario.destroy({ where: { id_usuario, id_comite, estado: 4 }, force: true });
 
-        if(!eliminarUsrDB){
+        if (!eliminarUsrDB) {
             return res.status(501).send({
                 ok: false,
                 msg: 'No se pudo eliminar la información del usuario'
             });
         }
-        
+
         res.send({
             ok: true,
             msg: 'La cuenta se eliminó correctamente',
@@ -633,7 +674,7 @@ const obtenerListaUsuariosValidacion = async (req, res = response) => {
     try {
 
         const usuariosValidacionDB = await Usuario.findAll({ attributes: ['id_usuario', 'nombres', 'primer_apellido', 'segundo_apellido', 'validado', 'estado'] });
-        
+
         res.send({
             ok: true,
             usuariosValidacionDB
@@ -660,7 +701,7 @@ const validarRegistroPorUsuario = async (req, res = response) => {
 
         const usrToValidateDB = await Usuario.findOne({ attributes: ['correo_electronico', 'nombres', 'primer_apellido', 'segundo_apellido', 'usuario', 'uuid'], where: { id_usuario } });
 
-        if(!usrToValidateDB){
+        if (!usrToValidateDB) {
             return res.status(501).send({
                 ok: false,
                 msg: `No se encontró información relacionada al usuario con id ${id_usuario}`
@@ -669,11 +710,11 @@ const validarRegistroPorUsuario = async (req, res = response) => {
 
         const { nombres, primer_apellido, segundo_apellido, correo_electronico, usuario, uuid } = usrToValidateDB;
         const nombre_completo = `${nombres.toUpperCase()} ${primer_apellido.toUpperCase()} ${segundo_apellido.toUpperCase()}`;
-    
+
 
         const fecha_validado = dbConnection.literal('GETDATE()');
 
-        const updUsuarioValidateDB = await Usuario.update({ validado: 1, fecha_validado  }, { where: { id_usuario } });
+        const updUsuarioValidateDB = await Usuario.update({ validado: 1, fecha_validado }, { where: { id_usuario } });
 
         if (updUsuarioValidateDB) {
             const correoAlta = await tokenMailRegister(id_usuario, correo_electronico, nombre_completo, usuario, uuid);
@@ -698,7 +739,7 @@ const validarRegistroPorUsuario = async (req, res = response) => {
                 msg: 'Ocurrió un error al guardar la información - CODE[1]'
             });
         }
-        
+
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -721,5 +762,6 @@ module.exports = {
     eliminarCuentaUsuario,
     obtenerListaUsuariosValidacion,
     validarRegistroPorUsuario,
-    enviarConstanciaUsuario
+    enviarConstanciaUsuario,
+    enviarQrUsuario
 }

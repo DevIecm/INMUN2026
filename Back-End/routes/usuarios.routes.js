@@ -3,23 +3,24 @@
  */
 
 const { Router } = require("express");
-const { check, body  } = require("express-validator");
+const { check, body } = require("express-validator");
 const expressFileUpload = require('express-fileupload');
 
-const { 
-    crearUsuario, 
-    eliminarUsuario, 
-    complementarInformacion, 
-    getUsuarioById, 
-    suscribirAComite, 
-    permisosYAutorizaciones, 
-    getPermisoId, 
-    avanceRegistro, 
-    eliminarCuentaUsuario, 
-    obtenerListaUsuariosValidacion, 
+const {
+    crearUsuario,
+    eliminarUsuario,
+    complementarInformacion,
+    getUsuarioById,
+    suscribirAComite,
+    permisosYAutorizaciones,
+    getPermisoId,
+    avanceRegistro,
+    eliminarCuentaUsuario,
+    obtenerListaUsuariosValidacion,
     validarRegistroPorUsuario,
-    enviarConstanciaUsuario
- } = require("../controllers/usuarios.controller");
+    enviarConstanciaUsuario,
+    enviarQrUsuario
+} = require("../controllers/usuarios.controller");
 
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
@@ -27,7 +28,7 @@ const { validarAdminJWT } = require("../middlewares/admin-validar-jwt");
 
 const router = Router();
 
-router.use( expressFileUpload() );
+router.use(expressFileUpload());
 
 
 router.post('/', [
@@ -69,6 +70,10 @@ router.post('/permisos-autorizaciones', [
 router.post('/enviar-constancia', [
     validarJWT,
 ], enviarConstanciaUsuario);
+
+router.post('/enviar-qr', [
+    validarJWT,
+], enviarQrUsuario);
 
 router.post('/permisos-autorizaciones-menor', [
     validarJWT,
