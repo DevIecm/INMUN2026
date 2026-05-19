@@ -72,7 +72,7 @@
             icon="pi pi-exclamation-triangle" severity="warning" value="Todos los campos son obligatorios"></p-tag>
 
         <button [disabled]="!formPermisos.valid || cierra_registro" type="submit"
-            class="w-full p-3 m-3 text-xl iecm-button-primary" label="Guardar y terminar" icon="pi pi-save"
+            class="w-full p-3 m-3 text-xl iecm-button-primary" label="Guardar y continuar" icon="pi pi-save"
             iconPos="right" [loading]="loading" pButton pRipple></button>
         <!-- <pre>{{ formPermisos.value | json }}</pre> -->
     </form>
@@ -188,7 +188,7 @@
         <p-tag styleClass="m-2" *ngIf="!formPermisosMenor.valid" class="flex justify-content-end flex-wrap"
             icon="pi pi-exclamation-triangle" severity="warning" value="Todos los campos son obligatorios"></p-tag>
         <button [disabled]="!formPermisosMenor.valid || cierra_registro" type="submit"
-            class="w-full p-3 m-3 text-xl iecm-button-primary" label="Guardar y terminar" icon="pi pi-save"
+            class="w-full p-3 m-3 text-xl iecm-button-primary" label="Guardar y continuar" icon="pi pi-save"
             iconPos="right" [loading]="loading" pButton pRipple></button>
         <!-- <pre>{{ formPermisosMenor.value | json }}</pre> -->
     </form>

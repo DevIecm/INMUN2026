@@ -79,7 +79,7 @@ export class ComitesComponent implements OnInit {
             this.obtenerComites();
             
             Swal.fire({
-              position: 'top-end',
+              position: 'center',
               title: resp.msg,
               icon: 'success',
               timer: 2500,

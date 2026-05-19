@@ -71,7 +71,7 @@ export class ReasignacionComiteComponent implements OnInit {
               // console.log(res);
               
               Swal.fire({
-                position: 'top-end',
+                position: 'center',
                 icon: 'success',
                 title: 'Bien',
                 text: res.msg,
@@ -86,7 +86,7 @@ export class ReasignacionComiteComponent implements OnInit {
               console.log(err);
               // Swal.fire({})
               Swal.fire({
-                position: 'top-end',
+                position: 'center',
                 icon: 'error',
                 title: 'Error',
                 text: 'Ocurrió un error al actualizar la información, hable con el administrador',
@@ -147,7 +147,7 @@ export class ReasignacionComiteComponent implements OnInit {
             // console.log(res);
 
             Swal.fire({
-              position: 'top-end',
+              position: 'center',
               icon: 'success',
               title: 'Bien',
               text: res.msg,
@@ -162,7 +162,7 @@ export class ReasignacionComiteComponent implements OnInit {
             console.log(err);
             // Swal.fire({})
             Swal.fire({
-              position: 'top-end',
+              position: 'center',
               icon: 'error',
               title: 'Error',
               text: 'Ocurrió un error al eliminar la información, hable con el administrador',

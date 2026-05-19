@@ -89,7 +89,7 @@ export class UsuarioService {
     }
 
     eliminarCuentaUsuario(id_usuario: number) {
-        return this.http.delete(`${base_url}/usuarios/eliminar-usuario/${id_usuario}`, this.adminService.headers);  
+        return this.http.delete(`${base_url}/usuarios/eliminar-usuario/${id_usuario}`, this.adminService.headers);
     }
 
     activarCuenta(correo_electronico: string, token_mail: string, uuid: string) {
@@ -164,4 +164,11 @@ export class UsuarioService {
         return this.http.post(`${base_url}/login/olvide-contrasena`, data);
     }
 
+    enviarConstanciaParticipacion(data: FormData) {
+        return this.http.post(`${base_url}/usuarios/enviar-constancia`, data, this.headers);
+    }
+
+    enviarConstanciaParticipacionQR(data: FormData) {
+        return this.http.post(`${base_url}/usuarios/enviar-qr`, data, this.headers);
+    }
 }

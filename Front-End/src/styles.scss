@@ -15,17 +15,59 @@ $gutter: 1rem; //for primeflex grid system
 
 
 .iecm-button-primary {
-    background-color: #8C65AA !important;
-    color: white;
+  background-color: #8C65AA !important;
+  color: white;
+}
+
+.iecm-button-primary-evaluaciones {
+  background-color: #8C65AA !important;
+  border-color: #8C65AA !important;
+  border-radius: 3px !important;
+  color: white;
 }
 
 ::ng-deep {
-    .p-selectbutton .p-button.p-highlight {
-      background: red;
-      background-color: red;
-    }
-  
-    .p-selectbutton .p-button.p-highlight:hover {
-      background: green;
-    }
+  .p-selectbutton .p-button.p-highlight {
+    background: red;
+    background-color: red;
   }
+
+  .p-selectbutton .p-button.p-highlight:hover {
+    background: green;
+  }
+}
+
+.border {
+  border: 1px solid black
+}
+
+
+// TOP BAR LAYOUT
+
+.layout-topbar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.topbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.topbar-right img {
+  height: 3.5rem;
+}
+
+.vertical-options label {
+  display: block;
+  margin-bottom: 5px;
+}
