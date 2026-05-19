@@ -48,6 +48,20 @@ export class ReportesComponent implements OnInit {
                         console.error('Error al descargar el archivo:', error);
                     })
                 break;
+
+            case 'evaluaciones':
+                this.reportesService.zipEvaluaciones()
+                    .subscribe((blob: any) => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'evaluaciones.zip'; // Nombre del archivo
+                        a.click();
+                        window.URL.revokeObjectURL(url); // Liberar memoria
+                    }, (error) => {
+                        console.error('Error al descargar el archivo:', error);
+                    })
+                break;
             default:
                 break;
         }

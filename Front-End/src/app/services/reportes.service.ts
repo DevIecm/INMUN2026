@@ -32,6 +32,10 @@ export class ReportesService {
     zipJustificantes() {
         const url = `${base_url}/admin-reportes/justificantes`;
         return this.http.get(url, { ...this.headers, responseType: 'blob' });
+    }
 
+    zipEvaluaciones() {
+        const url = `${base_url}/admin-reportes/evaluaciones`;
+        return this.http.get(url, { ...this.headers, responseType: 'blob' });
     }
 }
