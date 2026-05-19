@@ -64,6 +64,7 @@ export class FormEvaluacionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cargaEvaluaciones();
     this.iniciaFormulario();
     this.obtenerPreguntasDiagnostico(1);
   }
@@ -497,6 +498,13 @@ export class FormEvaluacionesComponent implements OnInit {
       });
   }
 
+  guardaRegistros() {
+
+  }
+
+  cargaEvaluaciones() {
+
+  }
 
   sendEvaluacion(cuestionario: number) {
     this.tabSeleccionado = cuestionario;
