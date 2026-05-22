@@ -40,14 +40,15 @@ const generaQrYPdf = async (id_usuario = 0, curp, uuid, correo_electronico, nomb
 
         doc.pipe(fs.createWriteStream(`${path_qr}/${uuid}.pdf`));
 
-        doc.image('./assets/images/logo-iecm-199x115.png', 90, 15, { fit: [100, 100], align: 'center', valign: 'center' })
+        doc.image('./assets/images/logo-darktxt.png', 90, 15, { fit: [100, 100], align: 'center', valign: 'center' })
 
         doc.image('./assets/images/inmun.png', 430, 15, { fit: [100, 100], align: 'center', valign: 'center' })
 
-        doc.text(`${nombre_completo}, el Modelo de Naciones Unidas`, 100, 200, {
-            align: 'center'
+        doc.text(`${nombre_completo} \n`, 100, 200, {
+            align: 'start'
         })
-            .text('te da la bienvenida, esta será tu identificación y debes llevarla contigo el día del evento.')
+            .text('', 100, 220, { align: 'start' })
+            .text('El Modelo de Naciones Unidas te da la bienvenida, esta será tu identificación y debes llevarla contigo el día del evento.')
 
         let path_qr_nrea = path.join(__dirname, `../uploads/qr/${curp}/${uuid}.png`);
 
