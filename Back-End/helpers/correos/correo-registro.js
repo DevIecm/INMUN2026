@@ -103,7 +103,6 @@ const generarConstanciasPDF = async (curp, nombre_completo, nombre_comite, uuid)
 
     // Carpeta destino
     const outputDir = path.join(`./uploads/templates/2026/${curp}`);
-    console.log('Intentando crear carpeta:', outputDir);
 
     // Archivo final
     const outputPath = path.join(outputDir, `constancia-${uuid}.pdf`);
@@ -191,7 +190,6 @@ const ConstanciaMailRegister = async (id_usuario = 0, correo_electronico = '', n
 
         const generado = await generarConstanciasPDF(usuariosDB.curp, nombre_completo, nombre_comite, usuariosDB.uuid);
 
-        console.log("HOAL", generado);
         if (!usuariosDB) {
             return { ok: false, msg: `No se encontró información relacionada al correo <b>${correo_electronico}</b> o la cuenta ya fue activada, favor de verificar` };
         }
@@ -202,9 +200,6 @@ const ConstanciaMailRegister = async (id_usuario = 0, correo_electronico = '', n
 
         const fecha_token = dbConnection.literal('GETDATE()');
         const token_mail = await generarJWTregistro(id_usuario, correo_electronico);
-
-        console.log(new Date());
-        console.log({ token_mail });
 
         const saveTokenUsuario = await Usuario.update({ token_mail, fecha_token }, { where: { id_usuario } });
 
@@ -231,12 +226,6 @@ const ConstanciaMailRegister = async (id_usuario = 0, correo_electronico = '', n
                 }
             ]
         });
-
-        console.log("Message sent: %s", info.messageId);
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-        // Preview only available when sending through an Ethereal account
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
         return { ok: true };
 
