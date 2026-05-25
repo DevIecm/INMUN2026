@@ -31,25 +31,28 @@ export class FormEvaluacionesComponent implements OnInit {
   disabledButtonEvaluacionFinal: boolean = false;
   disabledButtonEncuestaSatisfaccion: boolean = false;
 
-  preguntas: any[] = [];
-  respuestas: any[] = [];
+  preguntasGenerales: any[] = [];
+  respuestasGenerales: any[] = [];
 
-  // preguntasInicial: any[] = [];
+  preguntasInicial: any[] = [];
+  respuestasInicial: any[] = [];
+
   preguntasFinal: any[] = [];
-  preguntasSatisfaccion: any[] = [];
-
   respuestasFinal: any[] = [];
-  respuestasSatisfaccion: any[] = [];
+
+
+
+
 
   respuestasMultiples: any = {};
   respuestasSeleccionadas: any = {};
   respuestasSeleccionadasFinal: any = {};
+
   textoOtro: any = {};
 
   tabSeleccionado: number = 0;
   calificacion1Tab: number = 0;
   calificacion2Tab: number = 0;
-  // calificacion3Tab: number = 0;
   activeIndex: number | number[] = 0;
 
   form!: FormGroup;
@@ -64,127 +67,307 @@ export class FormEvaluacionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cargaEvaluaciones();
     this.iniciaFormulario();
-    this.obtenerPreguntasDiagnostico(1);
+    this.obtenerPreguntasGenerales();
   }
 
-  onCheckboxChange(event: any, controlName: string) {
+  onCheckboxChange(event: any, controlName: string, pregunta?: any, respuesta?: any) {
 
-    const formArray = this.form.get(controlName) as FormArray;
+    console.log("Pregunta:", pregunta);
+    console.log("Respuesta:", respuesta);
 
-    if (!formArray) {
-      console.error('No existe el control:', controlName);
-      return;
-    }
-
-    const input = event.target as HTMLInputElement;
-    const value = Number(input.value);
-
-    if (input.checked) {
-      if (!formArray.value.includes(value)) {
-        formArray.push(this.fb.control(value));
-      }
-    } else {
-      const index = formArray.controls.findIndex(x => x.value === value);
-      if (index !== -1) {
-        formArray.removeAt(index);
+    if (pregunta.id == 66) {
+      if (respuesta.id == 63 || respuesta.id == 64 || respuesta.id == 65 || respuesta.id == 66) {
+        this.obtenerPreguntas(1);
+      } else if (respuesta.id == 67 || respuesta.id == 68 || respuesta.id == 69) {
+        this.obtenerPreguntas(2);
+      } else if (respuesta.id == 70 || respuesta.id == 71 || respuesta.id == 72 || respuesta.id == 73 || respuesta.id == 74) {
+        this.obtenerPreguntas(3);
       }
     }
+
+    // const formArray = this.form.get(controlName) as FormArray;
+
+    // if (!formArray) {
+    //   console.error('No existe el control:', controlName);
+    //   return;
+    // }
+
+    // const input = event.target as HTMLInputElement;
+    // const value = Number(input.value);
+
+    // if (input.checked) {
+    //   if (!formArray.value.includes(value)) {
+    //     formArray.push(this.fb.control(value));
+    //   }
+    // } else {
+    //   const index = formArray.controls.findIndex(x => x.value === value);
+    //   if (index !== -1) {
+    //     formArray.removeAt(index);
+    //   }
+    // }
   }
 
-  obtenerRespuestas(id_cuestionario: number) {
-    this.cuestionariosService.obtenerRespuestas(id_cuestionario)
+  enviarSatisfaccion() {
+    Swal.fire({
+      title: 'Gracias por tu participación',
+      icon: 'success',
+      confirmButtonText: 'Aceptar',
+      showCancelButton: false
+    });
+
+    this.c2p = true;
+    this.c3p = false;
+    this.activeIndex = 3;
+    this.onTabOpen({ index: 3 });
+    this.disabledButtonEvaluacionInicial = true;
+  }
+
+  obtenerRespuestasPorPregunta(idPregunta: number) {
+    return this.respuestasGenerales?.filter(r => r.pregunta === idPregunta) || [];
+  }
+
+  obtenerRepuestasInicial(idPregunta: number) {
+    return this.respuestasInicial?.filter(r => r.pregunta === idPregunta) || [];
+  }
+
+  // obtenerRepuestasFinal(idPregunta: number) {
+  //   return this.respuestasFinal?.filter(r => r.pregunta === idPregunta) || [];
+  // }
+
+  esOtro(respuesta: string): boolean {
+    // console.log("respuesta: ", respuesta);
+    return respuesta.includes('Otro');
+  }
+
+  esTextBox(preguntaId: number): boolean {
+    return [45, 42].includes(preguntaId);
+  }
+
+  obtenerPreguntasGenerales() {
+    console.log("Obteniendo preguntas generales");
+    this.cuestionariosService.obtenerPreguntasGenerales()
       .subscribe((resp: any) => {
-        console.log(this.activeIndex)
-        if (this.activeIndex == 0) {
-          this.respuestas = resp.getRespuestasDB;
-        } else if (this.activeIndex == 1) {
-          this.respuestasFinal = resp.getRespuestasDB;
-          console.log(this.respuestasFinal)
-        } else if (this.activeIndex == 2) {
-          this.respuestasSatisfaccion = resp.getRespuestasDB;
+        if (resp.ok == true) {
+          console.log("resp.getPreguntasGeneralesDB: ", resp.getPreguntasGeneralesDB);
+          this.preguntasGenerales = resp.getPreguntasGeneralesDB;
+        } else {
+          Swal.fire({
+            title: 'Error al obtener preguntas',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
         }
-      }, error => {
-        Swal.fire({
-          text: 'Ocurrió un error al obtener las respuestas del cuestionario. Por favor, inténtalo nuevamente más tarde.',
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        });
-      }
-      );
+      });
+
+    this.obtenerRespuestasGenerales();
+  }
+
+  obtenerRespuestasGenerales() {
+    console.log("Obteniendo respuestas generales");
+    this.cuestionariosService.obtenerRespuestasGenerales()
+      .subscribe((resp: any) => {
+        console.log("resasasassp: ", resp);
+        if (resp.ok == true) {
+          console.log("resp.getRespuestasGeneralesDB: ", resp.getRespuestasGeneralesDB);
+          this.respuestasGenerales = resp.getRespuestasGeneralesDB;
+        } else {
+          Swal.fire({
+            title: 'Error al obtener respuestas',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      });
+  }
+
+  obtenerRespuestasInicial(nivel_escolar: number) {
+    console.log("Obteniendo respuestas iniciales");
+    this.cuestionariosService.obtenerRespuestas(nivel_escolar)
+      .subscribe((resp: any) => {
+        console.log("resp por nivel: ", resp);
+        if (resp.ok == true) {
+          console.log("resp.getRespuestasDB: ", resp.getRespuestasDB);
+          this.respuestasInicial = resp.getRespuestasDB;
+        } else {
+          Swal.fire({
+            title: 'Error al obtener respuestas',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      });
+  }
+
+  obtenerPreguntas(nivel_escolar: number) {
+    this.cuestionariosService.obtenerPreguntas(nivel_escolar)
+      .subscribe((resp: any) => {
+        console.log("resp++++++++++++++++: ", resp);
+        if (resp.ok == true) {
+          this.preguntasInicial = resp.getPreguntasDB;
+        } else {
+          Swal.fire({
+            title: 'Error al obtener preguntas',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      });
+
+    this.obtenerRespuestasInicial(nivel_escolar);
+  }
+
+  onTabOpen(event: any) {
+    if (event.index === 0) {
+      this.disabledButtonEvaluacionFinal = true;
+      this.disabledButtonEncuestaSatisfaccion = true;
+      this.obtenerPreguntasGenerales();
+    } else if (event.index === 1) {
+      this.c0p = true;
+      this.disabledButtonEvaluacionFinal = false;
+      this.disabledButtonEvaluacionInicial = true;
+      this.disabledButtonEncuestaSatisfaccion = true;
+      this.obtenerPreguntasGenerales();
+    } else if (event.index === 2) {
+      this.c1p = true;
+      this.disabledButtonEvaluacionInicial = true;
+      this.disabledButtonEvaluacionFinal = true;
+      this.disabledButtonEncuestaSatisfaccion = false;
+      this.obtenerPreguntasGenerales();
+    }
+  }
+
+  enviarConstancia() {
+    this.usuarioService.enviarConstanciaParticipacion(new FormData())
+      .subscribe({
+        next: (resp) => {
+          Swal.fire({
+            text: 'Se ha enviado la constancia de participación a tu cuenta de correo electrónico con que te registraste.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+        },
+        error: (err) => {
+          console.error(err);
+          Swal.fire({
+            text: 'Ocurrió un error al enviar la constancia de participación. Por favor, inténtalo nuevamente más tarde.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      });
+  }
+
+  enviarConstanciaQR() {
+    this.usuarioService.enviarConstanciaParticipacionQR(new FormData())
+      .subscribe({
+        next: (resp) => {
+          Swal.fire({
+            text: 'Se ha enviado la Credencial y QR para acceso al INMUN 2026 a tu cuenta de correo electrónico con que te registraste.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+        },
+        error: (err) => {
+          console.error(err);
+          Swal.fire({
+            text: 'Ocurrió un error al enviar Credencial y QR para acceso al INMUN 2026. Por favor, inténtalo nuevamente más tarde.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      });
+  }
+
+  sendEvaluacion(cuestionario: number) {
+    this.tabSeleccionado = cuestionario;
+    this.calcularCalificacion();
+  }
+
+  sendFinal(cuestionario: number) {
+    this.tabSeleccionado = cuestionario;
+  }
+
+  sendSatisfaccion(cuestionario: number) {
+    this.tabSeleccionado = cuestionario;
+    this.enviarSatisfaccion();
+  }
+
+  limpiarRespuestas() {
+    this.respuestasSeleccionadas = {};
+    this.textoOtro = {};
   }
 
   calcularCalificacion() {
 
-    let totalPreguntas = this.preguntas.length;
+    // let totalPreguntas = this.preguntas.length;
     let preguntasRespondidas = 0;
     let suma = 0;
 
-    this.preguntas.forEach(pregunta => {
-      const respuestasDePregunta = this.obtenerRespuestasPorPregunta(pregunta.id);
-      console.log(respuestasDePregunta);
+    // this.preguntas.forEach(pregunta => {
+    //   const respuestasDePregunta = this.obtenerRespuestasPorPregunta(pregunta.id);
+    //   console.log(respuestasDePregunta);
 
-      // RADIO (una sola respuesta)
-      if (!this.esMultiple(pregunta.id)) {
+    //   // RADIO (una sola respuesta)
+    //   if (!this.esMultiple(pregunta.id)) {
 
-        const seleccion = this.respuestasSeleccionadas[pregunta.id];
+    //     const seleccion = this.respuestasSeleccionadas[pregunta.id];
 
-        if (seleccion != undefined && seleccion != null) {
-          preguntasRespondidas++;
+    //     if (seleccion != undefined && seleccion != null) {
+    //       preguntasRespondidas++;
 
-          const respuestaObj = respuestasDePregunta.find(r => r.id == seleccion);
+    //       const respuestaObj = respuestasDePregunta.find(r => r.id == seleccion);
 
-          if (respuestaObj) {
-            suma += respuestaObj.puntuacion;
-          }
-        }
-      }
+    //       if (respuestaObj) {
+    //         suma += respuestaObj.puntuacion;
+    //       }
+    //     }
+    //   }
 
-      if (this.esMultiple(pregunta.id)) {
+    //   if (this.esMultiple(pregunta.id)) {
 
-        const control = this.form.get('p' + pregunta.id);
+    //     const control = this.form.get('p' + pregunta.id);
 
-        if (!control) return;
+    //     if (!control) return;
 
-        const seleccionadas: any[] = control.value || [];
+    //     const seleccionadas: any[] = control.value || [];
 
-        // filtrar SOLO seleccionadas reales
-        const seleccionadasReales = seleccionadas.filter(v => v !== null && v !== false);
+    //     // filtrar SOLO seleccionadas reales
+    //     const seleccionadasReales = seleccionadas.filter(v => v !== null && v !== false);
 
-        // si hay al menos una selección, cuenta como respondida
-        if (seleccionadasReales.length > 0) {
-          preguntasRespondidas++;
-        }
+    //     // si hay al menos una selección, cuenta como respondida
+    //     if (seleccionadasReales.length > 0) {
+    //       preguntasRespondidas++;
+    //     }
 
-        const respuestasCorrectas = respuestasDePregunta
-          .filter(r => r.puntuacion === 1)
-          .map(r => r.id);
+    //     const respuestasCorrectas = respuestasDePregunta
+    //       .filter(r => r.puntuacion === 1)
+    //       .map(r => r.id);
 
-        // correctas que sí seleccionó el usuario
-        const correctasSeleccionadas = seleccionadasReales.filter((id: any) =>
-          respuestasCorrectas.includes(id)
-        );
+    //     // correctas que sí seleccionó el usuario
+    //     const correctasSeleccionadas = seleccionadasReales.filter((id: any) =>
+    //       respuestasCorrectas.includes(id)
+    //     );
 
-        // incorrectas seleccionadas
-        const incorrectasSeleccionadas = seleccionadasReales.filter((id: any) =>
-          !respuestasCorrectas.includes(id)
-        );
+    //     // incorrectas seleccionadas
+    //     const incorrectasSeleccionadas = seleccionadasReales.filter((id: any) =>
+    //       !respuestasCorrectas.includes(id)
+    //     );
 
-        const seleccionoTodasCorrectas =
-          correctasSeleccionadas.length === respuestasCorrectas.length;
+    //     const seleccionoTodasCorrectas =
+    //       correctasSeleccionadas.length === respuestasCorrectas.length;
 
-        const noSeleccionoIncorrectas =
-          incorrectasSeleccionadas.length === 0;
+    //     const noSeleccionoIncorrectas =
+    //       incorrectasSeleccionadas.length === 0;
 
-        if (seleccionoTodasCorrectas && noSeleccionoIncorrectas) {
-          suma += 1;
-        }
-      }
+    //     if (seleccionoTodasCorrectas && noSeleccionoIncorrectas) {
+    //       suma += 1;
+    //     }
+    //   }
 
-      console.log("suma: ", suma);
+    //   console.log("suma: ", suma);
 
-    });
+    // });
 
     // if (preguntasRespondidas < 13) {
     //   Swal.fire({
@@ -214,7 +397,7 @@ export class FormEvaluacionesComponent implements OnInit {
           showCancelButton: false,
           showCloseButton: false
         })
-        this.enviarConstanciaQR();
+        // this.enviarConstanciaQR();
         this.disabledButtonEvaluacionInicial = true;
         this.c0p = true;
         this.c1p = false;
@@ -224,302 +407,6 @@ export class FormEvaluacionesComponent implements OnInit {
     });
   }
 
-  calcularCalificacionTab() {
-
-    let totalPreguntas = this.preguntasFinal.length;
-    let preguntasRespondidas = 0;
-    let suma = 0;
-
-    this.preguntasFinal.forEach(pregunta => {
-      const respuestasDePregunta = this.obtenerRespuestasPorPreguntaFinal(pregunta.id);
-      console.log(respuestasDePregunta);
-
-      // RADIO (una sola respuesta)
-      if (!this.esMultipleFinal(pregunta.id)) {
-
-        const seleccion = this.respuestasSeleccionadasFinal[pregunta.id];
-
-        if (seleccion != undefined && seleccion != null) {
-          preguntasRespondidas++;
-
-          const respuestaObj = respuestasDePregunta.find(r => r.id == seleccion);
-
-          if (respuestaObj) {
-            suma += respuestaObj.puntuacion;
-          }
-        }
-      }
-
-      if (this.esMultipleFinal(pregunta.id)) {
-
-        const control = this.form.get('p' + pregunta.id);
-
-        if (!control) return;
-
-        const seleccionadas: any[] = control.value || [];
-
-        // filtrar SOLO seleccionadas reales
-        const seleccionadasReales = seleccionadas.filter(v => v !== null && v !== false);
-
-        // si hay al menos una selección, cuenta como respondida
-        if (seleccionadasReales.length > 0) {
-          preguntasRespondidas++;
-        }
-
-        const respuestasCorrectas = respuestasDePregunta
-          .filter(r => r.puntuacion === 1)
-          .map(r => r.id);
-
-        // correctas que sí seleccionó el usuario
-        const correctasSeleccionadas = seleccionadasReales.filter((id: any) =>
-          respuestasCorrectas.includes(id)
-        );
-
-        // incorrectas seleccionadas
-        const incorrectasSeleccionadas = seleccionadasReales.filter((id: any) =>
-          !respuestasCorrectas.includes(id)
-        );
-
-        const seleccionoTodasCorrectas =
-          correctasSeleccionadas.length === respuestasCorrectas.length;
-
-        const noSeleccionoIncorrectas =
-          incorrectasSeleccionadas.length === 0;
-
-        if (seleccionoTodasCorrectas && noSeleccionoIncorrectas) {
-          suma += 1;
-        }
-      }
-
-      console.log("suma: ", suma);
-
-    });
-
-    // if (preguntasRespondidas < 13) {
-    //   Swal.fire({
-    //     title: 'Faltan preguntas',
-    //     text: `Debes contestar las 13 preguntas. Has respondido ${preguntasRespondidas}.`,
-    //     icon: 'warning',
-    //     confirmButtonText: 'Aceptar'
-    //   });
-    //   return;
-    // }
-
-    this.calificacion2Tab = suma;
-    console.log(this.tabSeleccionado)
-    Swal.fire({
-      title: 'Gracias por tu participación',
-      text: `Tu calificación es: ${this.calificacion2Tab}`,
-      icon: 'success',
-      confirmButtonText: 'Aceptar',
-      showCancelButton: false
-    })
-
-    this.disabledButtonEvaluacionInicial = true;
-    this.c2p = true;
-    this.c3p = false;
-    this.activeIndex = 2;
-    this.onTabOpen({ index: 2 });
-
-  }
-
-  enviarSatisfaccion() {
-    Swal.fire({
-      title: 'Gracias por tu participación',
-      icon: 'success',
-      confirmButtonText: 'Aceptar',
-      showCancelButton: false
-    });
-
-    this.c2p = true;
-    this.c3p = false;
-    this.activeIndex = 3;
-    this.onTabOpen({ index: 3 });
-    this.disabledButtonEvaluacionInicial = true;
-  }
-
-  obtenerRespuestasPorPregunta(idPregunta: number) {
-    return this.respuestas?.filter(r => r.pregunta === idPregunta) || [];
-  }
-
-  obtenerRespuestasPorPreguntaFinal(idPregunta: number) {
-    return this.respuestasFinal?.filter(r => r.pregunta === idPregunta) || [];
-  }
-
-  obtenerRespuestasPorPreguntaSatisfaccion(idPregunta: number) {
-    return this.respuestasSatisfaccion?.filter(r => r.pregunta === idPregunta) || [];
-  }
-
-  esOtro(respuesta: string): boolean {
-    return respuesta.includes('Otro:');
-  }
-
-  esMultiple(preguntaId: number): boolean {
-    return [11, 12, 13].includes(preguntaId);
-  }
-
-  esMultipleFinal(preguntaId: number): boolean {
-    return [24, 25, 26].includes(preguntaId);
-  }
-
-  esTextBox(preguntaId: number): boolean {
-    return [45, 42].includes(preguntaId);
-  }
-
-  isStars(preguntaId: number): boolean {
-    return [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 43, 44, 46].includes(preguntaId);
-  }
-
-  obtenerPreguntasDiagnostico(cuestionario: number) {
-    this.cuestionariosService.obtenerEvaluacionDiagnostica(cuestionario)
-      .subscribe((resp: any) => {
-        // this.preguntas = resp.getPreguntasDB;
-        if (resp.ok == true) {
-          console.log(this.activeIndex)
-
-          if (this.activeIndex == 0) {
-            this.preguntas = resp.getPreguntasDB;
-
-            this.preguntas.forEach(pregunta => {
-              if (this.esMultiple(pregunta.id)) {
-                this.form.addControl('p' + pregunta.id, this.fb.array([]));
-              }
-            });
-            this.obtenerRespuestas(cuestionario);
-
-          }
-
-          if (this.activeIndex == 1) {
-            this.preguntasFinal = resp.getPreguntasDB;
-
-            this.preguntasFinal.forEach(pregunta => {
-              if (this.esMultipleFinal(pregunta.id)) {
-                this.form.addControl('p' + pregunta.id, this.fb.array([]));
-              }
-            });
-            this.obtenerRespuestas(cuestionario);
-
-          }
-
-          if (this.activeIndex == 2) {
-            this.preguntasSatisfaccion = resp.getPreguntasDB;
-
-            this.preguntasSatisfaccion.forEach(pregunta => {
-              if (this.esMultiple(pregunta.id)) {
-                this.form.addControl('p' + pregunta.id, this.fb.array([]));
-              }
-            });
-            this.obtenerRespuestas(cuestionario);
-
-          }
-        }
-      }, error => {
-        Swal.fire({
-          text: 'Ocurrió un error al obtener las preguntas del cuestionario. Por favor, inténtalo nuevamente más tarde.',
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        });
-      }
-      );
-  }
-
-  limpiarEvaluaciones() {
-    this.respuestasSeleccionadas = {};
-    this.textoOtro = {};
-    this.form.reset();
-
-    Object.keys(this.form.controls).forEach(key => {
-      this.form.removeControl(key);
-    });
-  }
-
-  onTabOpen(event: any) {
-    this.limpiarEvaluaciones();
-
-    if (event.index === 0) {
-      this.obtenerPreguntasDiagnostico(1);
-      this.disabledButtonEvaluacionFinal = true;
-      this.disabledButtonEncuestaSatisfaccion = true;
-    } else if (event.index === 1) {
-      this.c0p = true;
-      this.obtenerPreguntasDiagnostico(2);
-      this.disabledButtonEvaluacionFinal = false;
-      this.disabledButtonEvaluacionInicial = true;
-      this.disabledButtonEncuestaSatisfaccion = true;
-    } else if (event.index === 2) {
-      this.c1p = true;
-      this.obtenerPreguntasDiagnostico(3);
-      this.disabledButtonEvaluacionInicial = true;
-      this.disabledButtonEvaluacionFinal = true;
-      this.disabledButtonEncuestaSatisfaccion = false;
-    }
-  }
-
-  enviarConstancia() {
-    this.usuarioService.enviarConstanciaParticipacion(new FormData())
-      .subscribe({
-        next: (resp) => {
-          Swal.fire({
-            text: 'Se ha enviado la constancia de participación a tu cuenta de correo electrónico con que te registraste.',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          });
-        },
-        error: (err) => {
-          console.error(err);
-          Swal.fire({
-            text: 'Ocurrió un error al enviar la constancia de participación. Por favor, inténtalo nuevamente más tarde.',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-        }
-      });
-  }
-
-
-  enviarConstanciaQR() {
-    this.usuarioService.enviarConstanciaParticipacionQR(new FormData())
-      .subscribe({
-        next: (resp) => {
-          Swal.fire({
-            text: 'Se ha enviado la Credencial y QR para acceso al INMUN 2026 a tu cuenta de correo electrónico con que te registraste.',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          });
-        },
-        error: (err) => {
-          console.error(err);
-          Swal.fire({
-            text: 'Ocurrió un error al enviar Credencial y QR para acceso al INMUN 2026. Por favor, inténtalo nuevamente más tarde.',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-        }
-      });
-  }
-
-  guardaRegistros() {
-
-  }
-
-  cargaEvaluaciones() {
-
-  }
-
-  sendEvaluacion(cuestionario: number) {
-    this.tabSeleccionado = cuestionario;
-    this.calcularCalificacion();
-    this.limpiarEvaluaciones();
-  }
-
-  sendFinal(cuestionario: number) {
-    this.tabSeleccionado = cuestionario;
-    this.calcularCalificacionTab();
-  }
-
-  sendSatisfaccion(cuestionario: number) {
-    this.tabSeleccionado = cuestionario;
-    this.enviarSatisfaccion();
-    // this.limpiarEvaluaciones();
-  }
 }
+
+
