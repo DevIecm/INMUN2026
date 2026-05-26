@@ -36,4 +36,21 @@ export class CuestionariosService {
     //     return this.http.post(`${base_url}/cuestionarios/guardar-respuestas`, data);
     // }
 
+
+    get headers() {
+        return {
+            headers: {
+                'x-token': localStorage.getItem('token') || ''
+            }
+        };
+    }
+
+    guardarRespuestas(data: any) {
+        return this.http.post(
+            `${base_url}/cuestionarios/guardar-respuestas-modulo`,
+            data,
+            this.headers
+        );
+    }
+
 }

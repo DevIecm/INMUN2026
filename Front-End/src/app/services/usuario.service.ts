@@ -50,7 +50,6 @@ export class UsuarioService {
         return this.http.post(`${base_url}/login`, formData)
             .pipe(
                 tap((resp: any) => {
-                    // console.log(resp);
 
                     this.guardarLocalStorage(resp.token, resp.menu);
                 })
@@ -129,7 +128,9 @@ export class UsuarioService {
             .pipe(
                 map((resp: any) => {
 
-                    console.log(resp);
+                    console.log("token: ", resp.usuarioDB);
+
+                    localStorage.setItem('keySession', JSON.stringify(resp.usuarioDB.id_usuario));
 
                     const { id_usuario, nombres, primer_apellido, segundo_apellido, edad, correo_electronico, curp, uuid, estado, perfil, genero, telefono_celular, telefono_casa, demarcacion_territorial, entidad_federativa, id_comite, folio, como_te_enteraste, discapacidad, cual_discapacidad, necesito_justificante, persona_dirigido, cargo_persona, institucion_persona } = resp.usuarioDB;
                     // const token = resp.token;
