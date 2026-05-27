@@ -33,6 +33,15 @@ const crearUsuario = async (req, res = response) => {
 
     try {
 
+        const existeUsuario = await Usuario.findOne({ where: { usuario } });
+
+        if (existeUsuario) {
+            return res.status(401).send({
+                ok: false,
+                msg: `El usuario ${usuario} ya se encuentra registrado en el INMUN, hable con el admininstrador`
+            });
+        }
+
         const countByCRUPDB = await Usuario.count({ where: { curp } });
 
         if (countByCRUPDB > 0) {

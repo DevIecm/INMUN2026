@@ -528,13 +528,14 @@ const generaJustificantes = async (req, res = response) => {
 
 }
 
-const generaEvaluaciones = async (req, res = response) => {
-
+const generaReporteEvaluaciones = async (req, res = response) => {
+    const nombre_reporte = `reporte_evaluaciones.xlsx`;
+    const pathFile = "./reports";  // Path to download excel
 }
 
 module.exports = {
     rptRegistros,
     descargarReporte,
     generaJustificantes,
-    generaEvaluaciones
+    generaReporteEvaluaciones
 }
