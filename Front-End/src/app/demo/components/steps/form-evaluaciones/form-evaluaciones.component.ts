@@ -48,6 +48,7 @@ export class FormEvaluacionesComponent implements OnInit {
   preguntasFinal: any[] = [];
   respuestasFinal: any[] = [];
 
+  nivel_escolar: number = 0;
 
   textoOtro: any = {};
 
@@ -80,10 +81,13 @@ export class FormEvaluacionesComponent implements OnInit {
     if (pregunta.id == 66) {
       if (respuesta.id == 63 || respuesta.id == 64 || respuesta.id == 65 || respuesta.id == 66) {
         this.obtenerPreguntas(1);
+        this.nivel_escolar = 1;
       } else if (respuesta.id == 67 || respuesta.id == 68 || respuesta.id == 69) {
         this.obtenerPreguntas(2);
+        this.nivel_escolar = 2;
       } else if (respuesta.id == 70 || respuesta.id == 71 || respuesta.id == 72 || respuesta.id == 73 || respuesta.id == 74) {
         this.obtenerPreguntas(3);
+        this.nivel_escolar = 3;
       }
     }
 
@@ -315,6 +319,8 @@ export class FormEvaluacionesComponent implements OnInit {
 
 
   armarRespuestas(preguntas: any[], seleccionadas: any, respuestasCatalogo: any[], idCuestionario: number) {
+// debugger
+//     console.log("idCuestionario", idCuestionario)
 
     return preguntas
       .map(pregunta => {

@@ -34,8 +34,19 @@ export class ReportesService {
         return this.http.get(url, { ...this.headers, responseType: 'blob' });
     }
 
-    zipEvaluaciones() {
+    // rptEvaluaciones() {
+    //     const url = `${base_url}/admin-reportes/evaluaciones`;
+    //     return this.http.get(url, this.headers);
+    // }
+
+    rptEvaluaciones() {
+
         const url = `${base_url}/admin-reportes/evaluaciones`;
-        return this.http.get(url, { ...this.headers, responseType: 'blob' });
+
+        return this.http.get(url, {
+            headers: this.headers.headers,
+            responseType: 'blob'
+        });
+
     }
 }

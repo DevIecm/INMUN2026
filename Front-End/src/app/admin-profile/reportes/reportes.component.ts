@@ -50,19 +50,26 @@ export class ReportesComponent implements OnInit {
                 break;
 
             case 'evaluaciones':
-                this.reportesService.zipEvaluaciones()
-                    .subscribe((blob: any) => {
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'evaluaciones.zip'; // Nombre del archivo
-                        a.click();
-                        window.URL.revokeObjectURL(url); // Liberar memoria
-                    }, (error) => {
-                        console.error('Error al descargar el archivo:', error);
-                    })
-                break;
-            default:
+                this.reportesService.rptEvaluaciones()
+                    .subscribe({
+                        next: (res: Blob) => {
+
+                            const blob = new Blob([res], {
+                                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                            });
+
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'reporte_evaluaciones.xlsx';
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        },
+                        error: (err) => {
+                            console.log(err);
+                        }
+                    });
+
                 break;
         }
 
