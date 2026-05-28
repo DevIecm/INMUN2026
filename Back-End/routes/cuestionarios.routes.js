@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { getPreguntasGenerales, getRespuestasGenerales, getPreguntas, getRespuestas, guardarRespuestas } = require("../controllers/cuestionarios.controller");
+const { getPreguntasGenerales, getRespuestasGenerales, getPreguntas, getRespuestas, guardarRespuestas, obtenerCalificacion } = require("../controllers/cuestionarios.controller");
 const { validarJWT } = require("../middlewares/validar-jwt");
 
 const router = Router();
@@ -12,5 +12,6 @@ router.post('/guardar-respuestas-modulo', validarJWT, guardarRespuestas);
 
 router.get('/obtener-respuestas', getRespuestas);
 router.post('/guardar-respuestas', guardarRespuestas);
+router.get('/obtener-calificacion', obtenerCalificacion);
 
 module.exports = router;    

@@ -4,7 +4,7 @@
 
 const { Router } = require('express');
 const { validarAdminJWT } = require('../middlewares/admin-validar-jwt');
-const { rptRegistros, descargarReporte, generaJustificantes, generaEvaluaciones } = require('../controllers/reportes.controller');
+const { rptRegistros, descargarReporte, generaJustificantes, generaReporteEvaluaciones } = require('../controllers/reportes.controller');
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.get('/rpt-registros', [validarAdminJWT], rptRegistros);
 
 router.get('/justificantes', [validarAdminJWT], generaJustificantes);
 
-router.get('/evaluaciones', [validarAdminJWT], generaEvaluaciones);
+router.get('/evaluaciones', [validarAdminJWT], generaReporteEvaluaciones);
 
 // SÓLO DESCARGA EL ARCHIVO CREADO
 router.get('/descargar-reporte/:nombre_reporte', descargarReporte);

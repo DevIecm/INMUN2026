@@ -529,8 +529,354 @@ const generaJustificantes = async (req, res = response) => {
 }
 
 const generaReporteEvaluaciones = async (req, res = response) => {
+
+    console.log("Generadno reporte de evaluaciones...");
+
     const nombre_reporte = `reporte_evaluaciones.xlsx`;
-    const pathFile = "./reports";  // Path to download excel
+    const pathFile = "./reports";
+
+    try {
+
+        const workbook = new excelJS.Workbook();  // Create a new workbook
+
+        const worksheetsecundaria = workbook.addWorksheet('Secundaria', {
+            views: [{
+                activeCell: 'A1',
+                showGridLines: false
+            }]
+        }); // New Worksheet
+
+        const worksheetBachillerato = workbook.addWorksheet('Bachillerato', {
+            views: [{
+                activeCell: 'A1',
+                showGridLines: false
+            }]
+        }); // New Worksheet
+
+        const worksheetLicenciatura = workbook.addWorksheet('Licenciatura', {
+            views: [{
+                activeCell: 'A1',
+                showGridLines: false
+            }]
+        }); // New Worksheet
+
+        // Asignamos las columnas a cada hoja
+        worksheetsecundaria.columns = [
+            { header: '1. Género', key: 'id_pregunta', width: 30 },
+            { header: '2. Edad', key: 'id_respuesta', width: 30 },
+            { header: '3. Último año de estudios concluido', key: 'otra_columna', width: 30 },
+            { header: '4. ¿Cuál de las siguientes opciones define mejor qué es la democracia?', key: 'otra_columna2', width: 30 },
+            { header: '5. En el salón de clases, la profesora permite que las y los estudiantes elijan democráticamente el tema del proyecto final. ¿Qué valor democrático se está aplicando?', key: 'otra_columna3', width: 30 },
+            { header: '6. Ante un conflicto en la escuela por el uso de la cancha de fútbol, ¿cuál es la mejor forma de resolverlo siguiendo principios democráticos?', key: 'otra_columna4', width: 30 },
+            { header: '7. ¿Qué acción representa una participación ciudadana activa y responsable por parte de las personas jóvenes?', key: 'otra_columna5', width: 30 },
+            { header: '8. ¿Qué es la "cultura de paz" en el contexto escolar?', key: 'otra_columna6', width: 30 },
+            { header: '9. Calificación', key: 'otra_columna7', width: 30 },
+        ];
+
+        worksheetBachillerato.columns = [
+            { header: '1. Género', key: 'id_pregunta', width: 30 },
+            { header: '2. Edad', key: 'id_respuesta', width: 30 },
+            { header: '3. Último año de estudios concluido', key: 'otra_columna', width: 30 },
+            { header: '4. ¿Cuál de las siguientes opciones define mejor la democracia como "forma de vida" y no solo como sistema de gobierno?', key: 'otra_columna2', width: 30 },
+            { header: '5. En una democracia representativa, es una de las funciones principales de la ciudadanía… ', key: 'otra_columna3', width: 30 },
+            { header: '6.Es la disposición de respetar a quienes tienen formas de pensar, ser y actuar distintas a la propia, siempre y cuando estas personas no cuestionen o vulneren la dignidad de otras.', key: 'otra_columna4', width: 30 },
+            { header: '7. ¿Cuál es una característica fundamental de una sociedad democrática?', key: 'otra_columna5', width: 30 },
+            { header: '8. Es una de las principales aspiraciones democráticas…', key: 'otra_columna6', width: 30 },
+            { header: '9. Calificación', key: 'otra_columna7', width: 30 },
+        ];
+
+        worksheetLicenciatura.columns = [
+            { header: '1. Género', key: 'id_pregunta', width: 30 },
+            { header: '2. Edad', key: 'id_respuesta', width: 30 },
+            { header: '3. Último año de estudios concluido', key: 'otra_columna', width: 30 },
+            { header: '4. ¿Qué es la Democracia?', key: 'otra_columna2', width: 30 },
+            { header: '5. En una democracia representativa, ¿cuál es la función principal de la ciudadanía más allá del voto?', key: 'otra_columna3', width: 30 },
+            { header: '6. ¿Qué value democrático es esencial para garantizar la convivencia pacífica entre personas con opiniones distintas?', key: 'otra_columna4', width: 30 },
+            { header: '7. ¿Qué mecanismo democrático permite a la ciudadanía evaluar y, en su caso, dar por terminado el mandato de un gobernante antes de tiempo?', key: 'otra_columna5', width: 30 },
+            { header: '8. Ante el surgimiento de desinformación en redes sociales, ¿cuál es la mejor práctica democrática?', key: 'otra_columna6', width: 30 },
+            { header: '9. Calificación', key: 'otra_columna7', width: 30 },
+        ];
+
+        // ---------------- Consulta de Secundaria -----------------
+        const query_evaluaciones_secundaria= `SELECT
+            res.id_pregunta,
+            res.id_respuesta,
+            res.otro_texto,
+            res.calificacion,
+            res.usuario,
+            res.id_cuestionario,
+            pres.pregunta,
+            resp.respuesta
+        FROM inmun2024.dbo.respuesta_cuestionarios_usuarios res
+        INNER JOIN inmun2024.dbo.preguntas_cuestionarios pres ON res.id_pregunta = pres.id
+        INNER join inmun2024.dbo.respuestas_cuestionarios resp ON res.id_respuesta = resp.id
+        WHERE res.id_cuestionario =1;`;
+
+        const exe_query_evaluaciones = await dbConnection.query(query_evaluaciones_secundaria);
+
+        console.log("exe_query_evaluaciones: ", exe_query_evaluaciones);
+
+        if (!exe_query_evaluaciones) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'Ocurrió un error en la consulta'
+            });
+        }
+
+        const respuestas = exe_query_evaluaciones[0];
+
+        const usuariosAgrupados = respuestas.reduce((acc, item) => {
+
+            if (!acc[item.usuario]) {
+                acc[item.usuario] = [];
+            }
+
+            acc[item.usuario].push(item);
+
+            return acc;
+
+        }, {});
+
+        Object.keys(usuariosAgrupados).forEach((usuario) => {
+
+            const respUsuario = usuariosAgrupados[usuario];
+
+            const filaSecundaria = {
+                id_pregunta: respUsuario[0]?.respuesta ?? '',
+                id_respuesta: respUsuario[1]?.respuesta ?? '',
+                otra_columna: respUsuario[2]?.respuesta ?? '',
+                otra_columna2: respUsuario[3]?.calificacion ?? '',
+                otra_columna3: respUsuario[4]?.calificacion ?? '',
+                otra_columna4: respUsuario[5]?.calificacion ?? '',
+                otra_columna5: respUsuario[6]?.calificacion ?? '',
+                otra_columna6: respUsuario[7]?.calificacion ?? '',
+                otra_columna7: respUsuario.reduce(
+                    (acc, item) => acc + item.calificacion,
+                    0
+                )
+            };
+
+            worksheetsecundaria.addRow(filaSecundaria);
+
+        });
+
+        // ----------------- Consulta de Bachillerato -----------------
+
+        const query_evaluaciones_bachillerato= `SELECT
+            res.id_pregunta,
+            res.id_respuesta,
+            res.otro_texto,
+            res.calificacion,
+            res.usuario,
+            res.id_cuestionario,
+            pres.pregunta,
+            resp.respuesta
+        FROM inmun2024.dbo.respuesta_cuestionarios_usuarios res
+        INNER JOIN inmun2024.dbo.preguntas_cuestionarios pres ON res.id_pregunta = pres.id
+        INNER join inmun2024.dbo.respuestas_cuestionarios resp ON res.id_respuesta = resp.id
+        WHERE res.id_cuestionario = 2;`;
+
+        const exe_query_evaluaciones_bachillerato = await dbConnection.query(query_evaluaciones_bachillerato);
+
+        console.log("exe_query_evaluaciones_bachillerato: ", exe_query_evaluaciones_bachillerato);
+
+        if (!exe_query_evaluaciones_bachillerato) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'Ocurrió un error en la consulta'
+            });
+        }
+
+        const respuestas_bachillerato = exe_query_evaluaciones_bachillerato[0];
+
+        const usuariosAgrupados_bachillerato = respuestas_bachillerato.reduce((acc, item) => {
+
+            if (!acc[item.usuario]) {
+                acc[item.usuario] = [];
+            }
+
+            acc[item.usuario].push(item);
+
+            return acc;
+
+        }, {});
+
+        Object.keys(usuariosAgrupados_bachillerato).forEach((usuario) => {
+
+            const respUsuario = usuariosAgrupados_bachillerato[usuario];
+
+            const filaBachillerato = {
+                id_pregunta: respUsuario[0]?.respuesta ?? '',
+                id_respuesta: respUsuario[1]?.respuesta ?? '',
+                otra_columna: respUsuario[2]?.respuesta ?? '',
+                otra_columna2: respUsuario[3]?.calificacion ?? '',
+                otra_columna3: respUsuario[4]?.calificacion ?? '',
+                otra_columna4: respUsuario[5]?.calificacion ?? '',
+                otra_columna5: respUsuario[6]?.calificacion ?? '',
+                otra_columna6: respUsuario[7]?.calificacion ?? '',
+                otra_columna7: respUsuario.reduce(
+                    (acc, item) => acc + item.calificacion,
+                    0
+                )
+            };
+
+            worksheetBachillerato.addRow(filaBachillerato);
+
+        });
+
+        // --------------------- Consulta Licenciatura -----------------
+
+        const query_evaluaciones_licenciatura= `SELECT
+            res.id_pregunta,
+            res.id_respuesta,
+            res.otro_texto,
+            res.calificacion,
+            res.usuario,
+            res.id_cuestionario,
+            pres.pregunta,
+            resp.respuesta
+        FROM inmun2024.dbo.respuesta_cuestionarios_usuarios res
+        INNER JOIN inmun2024.dbo.preguntas_cuestionarios pres ON res.id_pregunta = pres.id
+        INNER join inmun2024.dbo.respuestas_cuestionarios resp ON res.id_respuesta = resp.id
+        WHERE res.id_cuestionario = 3;`;
+
+        const exe_query_evaluaciones_licenciatura = await dbConnection.query(query_evaluaciones_licenciatura);
+
+        console.log("exe_query_evaluaciones_licenciatura: ", exe_query_evaluaciones_licenciatura);
+
+        if (!exe_query_evaluaciones_licenciatura) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'Ocurrió un error en la consulta'
+            });
+        }
+
+        const respuestas_licenciatura = exe_query_evaluaciones_licenciatura[0];
+
+        const usuariosAgrupados_licenciatura = respuestas_licenciatura.reduce((acc, item) => {
+
+            if (!acc[item.usuario]) {
+                acc[item.usuario] = [];
+            }
+
+            acc[item.usuario].push(item);
+
+            return acc;
+
+        }, {});
+
+        Object.keys(usuariosAgrupados_licenciatura).forEach((usuario) => {
+
+            const respUsuario = usuariosAgrupados_licenciatura[usuario];
+
+            const filaLicenciatura = {
+                id_pregunta: respUsuario[0]?.respuesta ?? '',
+                id_respuesta: respUsuario[1]?.respuesta ?? '',
+                otra_columna: respUsuario[2]?.respuesta ?? '',
+                otra_columna2: respUsuario[3]?.calificacion ?? '',
+                otra_columna3: respUsuario[4]?.calificacion ?? '',
+                otra_columna4: respUsuario[5]?.calificacion ?? '',
+                otra_columna5: respUsuario[6]?.calificacion ?? '',
+                otra_columna6: respUsuario[7]?.calificacion ?? '',
+                otra_columna7: respUsuario.reduce(
+                    (acc, item) => acc + item.calificacion,
+                    0
+                )
+            };
+
+            worksheetLicenciatura.addRow(filaLicenciatura);
+
+        });
+
+        worksheetsecundaria.eachRow((row) => {
+
+            row.height = 40;
+
+            row.eachCell((cell) => {
+
+                cell.alignment = {
+                    vertical: 'middle',
+                    horizontal: 'center',
+                    wrapText: true
+                };
+
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            });
+        });
+
+        worksheetBachillerato.eachRow((row) => {
+
+            row.height = 40;
+
+            row.eachCell((cell) => {
+
+                cell.alignment = {
+                    vertical: 'middle',
+                    horizontal: 'center',
+                    wrapText: true
+                };
+
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            });
+        });
+
+        worksheetLicenciatura.eachRow((row) => {
+
+            row.height = 40;
+
+            row.eachCell((cell) => {
+
+                cell.alignment = {
+                    vertical: 'middle',
+                    horizontal: 'center',
+                    wrapText: true
+                };
+
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            });
+        });
+
+        const rutaArchivo = path.join(pathFile, nombre_reporte);
+        await workbook.xlsx.writeFile(rutaArchivo);
+
+        return res.download(rutaArchivo, nombre_reporte, (err) => {
+
+            if (err) {
+                console.log('Error al descargar:', err);
+
+                if (!res.headersSent) {
+                    res.status(500).send({
+                        ok: false,
+                        msg: 'Error al descargar archivo'
+                    });
+                }
+            } else {
+                console.log('Descarga completada');
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
 }
 
 module.exports = {

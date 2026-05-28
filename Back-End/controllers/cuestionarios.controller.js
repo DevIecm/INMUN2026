@@ -177,13 +177,49 @@ const guardarRespuestas = async (req = request, res = response) => {
         });
 
     }
+};
 
-}
+const obtenerCalificacion = async (req = request, res = response) => {
+
+    const id_usuario = req.query.id_usuario;
+    const id_cuestionario = req.query.id_cuestionario;
+
+    try {
+
+        const calificacionDB = await RespuestasCuestionariosUsuarios.findAll({
+            where: { usuario: id_usuario, id_cuestionario: id_cuestionario },
+            attributes: ['calificacion']
+        });
+    
+        if (!calificacionDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Hable con el administrador - CODE[N]'
+            });
+        }   
+    
+        res.json({
+            ok: true,
+            msg: 'Calificación obtenida correctamente',
+            calificacionDB
+        });
+        
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador - CODE[N]'
+        });
+    }
+};
+
 
 module.exports = {
     getPreguntasGenerales,
     getRespuestasGenerales,
     getPreguntas,
+    obtenerCalificacion,
 
     getRespuestas,
     guardarRespuestas
